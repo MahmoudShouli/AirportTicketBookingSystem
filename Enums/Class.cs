@@ -2,5 +2,7 @@
 
 public enum Class
 {
-    
+    Economy,
+    Business,
+    FirstClass
 }
