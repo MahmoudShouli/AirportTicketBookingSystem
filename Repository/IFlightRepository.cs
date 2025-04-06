@@ -1,6 +1,9 @@
-﻿namespace AirportTicketBookingSystem.Repository;
+﻿using AirportTicketBookingSystem.Models;
 
-public interface IFlightRepository<T>
+namespace AirportTicketBookingSystem.Repository;
+
+public interface IFlightRepository
 {
-     List<T> LoadData();
+     List<Flight> LoadFlights();
+     void SaveFlights(List<Flight> flights);
 }
