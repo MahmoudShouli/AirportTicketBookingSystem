@@ -1,9 +1,21 @@
-﻿namespace AirportTicketBookingSystem;
+﻿using AirportTicketBookingSystem.Repository;
+using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Utils;
 
-class Program
+namespace AirportTicketBookingSystem;
+
+internal static class Program
 {
-    static void Main(string[] args)
+    private static void Main()
     {
-        Console.WriteLine("Hello, World!");
+        var flightRepo = new FlightRepository();
+        var passengerRepo = new PassengersRepository();
+        
+        var flightService = new FlightService(flightRepo);
+        var passengerService = new PassengerServices(passengerRepo);
+        
+        var printer = new Printer(passengerService, flightService);
+        
+        printer.ShowMainMenu();
     }
 }
