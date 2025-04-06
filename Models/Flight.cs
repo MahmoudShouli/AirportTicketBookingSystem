@@ -29,8 +29,7 @@ public class Flight
                $"From: {DepartureCountry} ({DepartureAirport}) -> " +
                $"To: {DestinationCountry} ({DestinationAirport}) | " +
                $"Date: {DepartureDate:yyyy-MM-dd} | " +
-               $"Class: {Class} | " +
-               $"Booked: {(IsBooked ? "Yes" : "No")}";
+               $"Class: {Class}";
     }
 
 }

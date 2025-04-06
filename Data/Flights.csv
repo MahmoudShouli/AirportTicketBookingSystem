@@ -1,6 +1,6 @@
 FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked
 FL001,350.00,USA,France,2025-06-15T08:00:00,John F. Kennedy International,Charles de Gaulle,Business,True
 FL002,120.50,UK,Japan,2025-07-01T14:30:00,Heathrow,Narita International,Economy,True
-FL003,599.99,Canada,Germany,2025-05-20T09:15:00,Toronto Pearson,Frankfurt Airport,FirstClass,False
-FL004,385.75,Italy,Spain,2025-06-10T11:00:00,Leonardo da Vinci,Madrid-Barajas,Business,False
+FL003,599.99,Canada,Germany,2025-05-20T09:15:00,Toronto Pearson,Frankfurt Airport,FirstClass,True
+FL004,385.75,Italy,Spain,2025-06-10T11:00:00,Leonardo da Vinci,Madrid-Barajas,Business,True
 FL005,510.00,Australia,USA,2025-08-05T22:00:00,Sydney International,Los Angeles International,FirstClass,True

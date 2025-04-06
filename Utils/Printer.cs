@@ -183,6 +183,9 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     PrintBookings(_passenger.Bookings);
                     ShowAnyKeyMessage();
                     break;
+                case "4":
+                    ShowCancellation();
+                    break;
                 case "5":
                     return;
                 default:
@@ -190,6 +193,21 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     break;
             
             }
+        }
+    }
+
+    private void ShowCancellation()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("Enter the flight ID that you booked");
+            var userInput = Console.ReadLine();
+            
+            var result = passengerServices.CancelBooking(_passenger, userInput);
+
+            ShowAnyKeyMessage(result);
+            return;
         }
     }
 
@@ -278,7 +296,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
     private static void ShowAnyKeyMessage(string? message = null)
     {
         Console.WriteLine();
-        Console.WriteLine(message + "Press any key to continue...");
+        Console.WriteLine(message + " Press any key to continue...");
         Console.ReadKey();
     }
 }

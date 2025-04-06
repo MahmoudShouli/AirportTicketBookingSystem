@@ -15,5 +15,21 @@ public class PassengerServices(IPassengersRepository passengersRepository)
     {
         passengersRepository.AddPassenger(passenger);
     }
+
+    public string CancelBooking(Passenger passenger, string flightId)
+    {
+        var booking = passenger.Bookings.FirstOrDefault(b => b.FlightId == flightId);
+
+        if (booking == null)
+        {
+            return "Booking not found ";
+        }
+        
+        
+        passenger.RemoveBooking(booking);
+        return "Booking has been cancelled ";
+        
+        
+    }
     
 }
