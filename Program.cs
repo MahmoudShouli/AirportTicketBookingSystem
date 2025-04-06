@@ -9,8 +9,11 @@ internal static class Program
     private static void Main()
     {
         var flightRepo = new FlightRepository();
+        var passengerRepo = new PassengersRepository();
+        
         var flightService = new FlightService(flightRepo);
-        var passengerService = new PassengerServices(flightService);
+        var passengerService = new PassengerServices(flightService, passengerRepo);
+        
         var printer = new Printer(passengerService);
         
         printer.ShowMainMenu();
