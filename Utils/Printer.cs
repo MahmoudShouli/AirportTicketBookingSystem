@@ -4,7 +4,7 @@ using AirportTicketBookingSystem.Services;
 
 namespace AirportTicketBookingSystem.Utils;
 
-public class Printer(PassengerServices passengerServices)
+public class Printer(PassengerServices passengerServices, FlightService flightServices)
 {
     private Passenger _passenger;
     private static void PrintFlights(List<Flight> flights)
@@ -154,12 +154,37 @@ public class Printer(PassengerServices passengerServices)
                 case "1":
                     ShowSearchFlightMenu();
                     break;
+                case "2":
+                    BookMenu();
+                    break;
                 case "5":
                     return;
                 default:
                     Console.WriteLine("Invalid input. Try again.");
                     break;
             
+            }
+        }
+    }
+
+    private void BookMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("Enter the flight ID");
+            var userInput = Console.ReadLine();
+            
+            var booking = flightServices.BookFlight(_passenger, userInput);
+
+            if (booking == null)
+            {
+                ShowAnyKeyMessage("This flight is already booked or it doesn't exist.");
+            }
+            else
+            {
+                ShowAnyKeyMessage("Flight booked!");
+                return;
             }
         }
     }
@@ -192,22 +217,22 @@ public class Printer(PassengerServices passengerServices)
             switch (searchParam)
             {
                 case "1":
-                    PrintFlights(passengerServices.SearchFlightsForPassengers(keyword:"all"));
+                    PrintFlights(flightServices.SearchFlights(keyword:"all"));
                     break;
                 case "2":
-                    PrintFlights(passengerServices.SearchFlightsForPassengers(price: Convert.ToDecimal(searchVal)));
+                    PrintFlights(flightServices.SearchFlights(price: Convert.ToDecimal(searchVal)));
                     break;
                 case "3":
                 case "4":
                 case "5":
                 case "6":
                 case "7":
-                    PrintFlights(passengerServices.SearchFlightsForPassengers(keyword:searchVal));
+                    PrintFlights(flightServices.SearchFlights(keyword:searchVal));
                     break;
                 case "8":
                     if (Enum.TryParse<Class>(searchVal, ignoreCase: true, out var parsedClass))
                     {
-                        PrintFlights(passengerServices.SearchFlightsForPassengers(flightClass: parsedClass));
+                        PrintFlights(flightServices.SearchFlights(flightClass: parsedClass));
                     }
                     else
                     {

@@ -8,7 +8,7 @@ public class FlightService(IFlightRepository flightRepository)
 {
     public List<Flight> SearchFlights(string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null)
     {
-        var flights = flightRepository.LoadFlights();
+        var flights = flightRepository.LoadFlights().Where(f => f.IsBooked == false).ToList();
         var filteredFlights = new List<Flight>();
 
         
@@ -45,5 +45,26 @@ public class FlightService(IFlightRepository flightRepository)
         }
 
         return filteredFlights;
+    }
+    
+    public Booking? BookFlight(Passenger passenger, string? flightId)
+    {
+        var flights = flightRepository.LoadFlights();
+        var flightToBook = flights.FirstOrDefault(f=> f.Id == flightId);
+
+        if (flightToBook != null)
+        {
+            if (!flightToBook.IsBooked)
+            {
+                var newBooking = new Booking { FlightId = flightId, PassengerName = passenger.Name };
+                passenger.AddBooking(newBooking);
+                flightToBook.IsBooked = true;
+                flightRepository.SaveFlights(flights);
+                return newBooking;
+            }
+            
+        }
+
+        return null;
     }
 }

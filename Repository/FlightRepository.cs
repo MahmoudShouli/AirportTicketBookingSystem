@@ -33,10 +33,29 @@ public class FlightRepository : IFlightRepository
                     DepartureDate = DateTime.Parse(parts[4]),
                     DepartureAirport = parts[5],
                     DestinationAirport = parts[6],
-                    Class = (Class)Enum.Parse(typeof(Class), parts[7], ignoreCase: true)
+                    Class = (Class)Enum.Parse(typeof(Class), parts[7], ignoreCase: true),
+                    IsBooked = bool.Parse(parts[8])
 
                 };
             })
             .ToList();
+    }
+
+    public void SaveFlights(List<Flight> flights)
+    {
+        var lines = new List<string>
+        {
+            "FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked"
+        };
+
+        foreach (var flight in flights)
+        {
+            var line = $"{flight.Id},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
+                       $"{flight.DepartureDate:yyyy-MM-ddTHH:mm:ss},{flight.DepartureAirport},{flight.DestinationAirport}," +
+                       $"{flight.Class},{flight.IsBooked}";
+            lines.Add(line);
+        }
+
+        File.WriteAllLines(FilePath, lines);
     }
 }

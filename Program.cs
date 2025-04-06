@@ -12,9 +12,9 @@ internal static class Program
         var passengerRepo = new PassengersRepository();
         
         var flightService = new FlightService(flightRepo);
-        var passengerService = new PassengerServices(flightService, passengerRepo);
+        var passengerService = new PassengerServices(passengerRepo);
         
-        var printer = new Printer(passengerService);
+        var printer = new Printer(passengerService, flightService);
         
         printer.ShowMainMenu();
     }
