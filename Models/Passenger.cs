@@ -10,4 +10,9 @@ public class Passenger
     {
         Bookings.Add(booking);
     }
+
+    public void RemoveBooking(Booking booking)
+    {
+        Bookings.Remove(booking);
+    }
 }

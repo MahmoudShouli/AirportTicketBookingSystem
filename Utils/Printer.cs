@@ -9,10 +9,32 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
     private Passenger _passenger;
     private static void PrintFlights(List<Flight> flights)
     {
+        
         if (flights.Count == 0)
             Console.WriteLine("No flights found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Available Flights:");
+            Console.WriteLine();
+            flights.ForEach(Console.WriteLine);
+        }
         
-        flights.ForEach(Console.WriteLine);
+    }
+    
+    private static void PrintBookings(List<Booking> bookings)
+    {
+        
+        if (bookings.Count == 0)
+            Console.WriteLine("No bookings found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Bookings:");
+            Console.WriteLine();
+            bookings.ForEach(Console.WriteLine);
+        }
+        
     }
     
     public void ShowMainMenu()
@@ -96,7 +118,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             }
             else
             {
-                Console.WriteLine("username is already taken.");
+                Console.WriteLine("username is already taken. ");
                 ShowAnyKeyMessage();
             }
         }
@@ -139,7 +161,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("Welcome Passenger!");
+            Console.WriteLine($"Welcome {_passenger.Name}!");
             Console.WriteLine("What would you like to do?:");
             Console.WriteLine("1. Search for a flight");
             Console.WriteLine("2. Book a flight");
@@ -156,6 +178,10 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     break;
                 case "2":
                     BookMenu();
+                    break;
+                case "3":
+                    PrintBookings(_passenger.Bookings);
+                    ShowAnyKeyMessage();
                     break;
                 case "5":
                     return;
@@ -251,6 +277,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
     
     private static void ShowAnyKeyMessage(string? message = null)
     {
+        Console.WriteLine();
         Console.WriteLine(message + "Press any key to continue...");
         Console.ReadKey();
     }
