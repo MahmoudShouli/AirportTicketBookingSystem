@@ -1,0 +1,147 @@
+﻿using AirportTicketBookingSystem.Enums;
+using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Services;
+
+namespace AirportTicketBookingSystem.Utils;
+
+public static class Printer
+{
+    private static void PrintFlights(List<Flight> flights)
+    {
+        flights.ForEach(Console.WriteLine);
+    }
+    
+    public static void ShowMainMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+        
+            Console.WriteLine("Welcome to the Airport Ticket Booking System!");
+            Console.WriteLine("What is your role?:");
+            Console.WriteLine("1. Passenger");
+            Console.WriteLine("2. Manager");
+            Console.WriteLine("Your choice: ");
+        
+            var userInput = Console.ReadLine();
+            
+            switch (userInput)
+            {
+                case "1":
+                    ShowPassengerMenu();
+                    return;
+                case "2":
+                    ShowManagerMenu();
+                    return;
+                default:
+                    Console.WriteLine("Invalid input. Try again.");
+                    break;
+            
+            }
+        }
+        
+    }
+
+    private static void ShowManagerMenu()
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void ShowPassengerMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+        
+            Console.WriteLine("Welcome Passenger!");
+            Console.WriteLine("What would you like to do?:");
+            Console.WriteLine("1. Search for a flight");
+            Console.WriteLine("2. Book a flight");
+            Console.WriteLine("3. View your bookings");
+            Console.WriteLine("4. Cancel a booking");
+            Console.WriteLine("5. Exit");
+            Console.WriteLine("Your choice: ");
+        
+            var userInput = Console.ReadLine();
+            
+            switch (userInput)
+            {
+                case "1":
+                    ShowSearchFlightMenu();
+                    break;
+                default:
+                    Console.WriteLine("Invalid input. Try again.");
+                    break;
+            
+            }
+        }
+    }
+
+    private static void ShowSearchFlightMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            
+            Console.WriteLine("What would you like to search by?:");
+            Console.WriteLine("1. All flights");
+            Console.WriteLine("2. Price");
+            Console.WriteLine("3. Departure Country");
+            Console.WriteLine("4. Destination Country");
+            Console.WriteLine("5. Departure Date");
+            Console.WriteLine("6. Departure Airport");
+            Console.WriteLine("7. Arrival Airport");
+            Console.WriteLine("8. Class");
+            Console.WriteLine("9. Exit");
+            
+            Console.WriteLine("Your choice: ");
+            var searchParam = Console.ReadLine();
+            var searchVal = "";
+            
+            if (searchParam != "1" && searchParam != "9")
+            {
+                Console.WriteLine("Enter value: ");
+                searchVal = Console.ReadLine();
+            }
+            
+            switch (searchParam)
+            {
+                case "1":
+                    PrintFlights(PassengerServices.SearchForFlights(keyword:"all"));
+                    break;
+                case "2":
+                    PrintFlights(PassengerServices.SearchForFlights(price: Convert.ToDecimal(searchVal)));
+                    break;
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                    PrintFlights(PassengerServices.SearchForFlights(keyword:searchVal));
+                    break;
+                case "8":
+                    if (Enum.TryParse<Class>(searchVal, ignoreCase: true, out var parsedClass))
+                    {
+                        PrintFlights(PassengerServices.SearchForFlights(flightClass: parsedClass));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid class type. Please enter one of: Economy, Business, FirstClass.");
+                    }
+                    break;
+                case "9":
+                    return;
+                default:
+                    Console.WriteLine("Invalid input. Try again.");
+                    break; 
+            }
+            ShowAnyKeyMessage();
+        }
+    }
+    
+    private static void ShowAnyKeyMessage(string? message = null)
+    {
+        Console.WriteLine(message + "Press any key to continue...");
+        Console.ReadKey();
+    }
+}
