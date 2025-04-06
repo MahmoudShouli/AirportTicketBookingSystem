@@ -5,11 +5,11 @@ using AirportTicketBookingSystem.Enums;
 
 namespace AirportTicketBookingSystem.Repository;
 
-public class FlightRepository : IFlightRepository<Flight> 
+public class FlightRepository : IFlightRepository
 {
     private const string FilePath = @"D:\Computer Engineering\5th Year 2nd Sem\Internship\AirportTicketBookingSystem\Data\Flights.csv";
 
-    public List<Flight> LoadData()
+    public List<Flight> LoadFlights()
     {
         var flights = new List<Flight>();
 
