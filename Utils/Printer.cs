@@ -113,6 +113,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
 
             if (_passenger == null)
             {
+                _passenger = new Passenger { Name = userInput };
                 passengerServices.RegisterPassenger(_passenger);
                 ShowPassengerMenu();
             }

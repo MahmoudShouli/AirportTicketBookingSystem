@@ -22,12 +22,12 @@ public class PassengerServices(IPassengersRepository passengersRepository)
 
         if (booking == null)
         {
-            return "Booking not found ";
+            return "Booking not found.";
         }
         
         
         passenger.RemoveBooking(booking);
-        return "Booking has been cancelled ";
+        return "Booking has been cancelled.";
         
         
     }
