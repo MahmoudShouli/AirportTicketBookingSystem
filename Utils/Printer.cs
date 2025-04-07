@@ -171,6 +171,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     ShowFilterBookingsMenu();
                     break;
                 case "2":
+                    ShowImportMenu();
                     break;
                 case "3":
                     return;
@@ -181,6 +182,89 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             }
         }
     }
+
+    private void ShowImportMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("\nBefore you import, these are important details to look out for in your file:");
+            Console.WriteLine();
+            ShowValidationDetails();
+            Console.WriteLine();
+        
+            Console.WriteLine("Enter the path to the CSV file you want to import or Q to exit:");
+            var userInput = Console.ReadLine();
+            
+            if (userInput == "Q")
+                return;
+
+            var flights = FileServices.ConvertFileToFlights(userInput);
+            if (flights == null)
+            {
+                ShowAnyKeyMessage();
+                continue;
+            }
+            
+            var isValid = FileServices.Validate(flights);
+            if (!isValid)
+            {
+                ShowAnyKeyMessage("Check again and come back.");
+                
+            }
+            else
+            {
+                Console.WriteLine("All validations passed!");
+                FileServices.SaveImportedFile(userInput);
+                ShowAnyKeyMessage();
+                
+            }
+
+            return;
+
+        }
+        
+    }
+
+    private static void ShowValidationDetails()
+    {
+        Console.WriteLine("Validation Details:\n");
+
+        Console.WriteLine("* Flight ID");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required");
+        Console.WriteLine("                 unique\n");
+        
+        Console.WriteLine("* Price");
+        Console.WriteLine("  - Type       : decimal");
+        Console.WriteLine("  - Constraints: required");
+
+        Console.WriteLine("* Departure Country");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required\n");
+
+        Console.WriteLine("* Destination Country");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required, cannot be the same as Departure Country\n");
+
+        Console.WriteLine("* Departure Date");
+        Console.WriteLine("  - Type       : DateTime");
+        Console.WriteLine("  - Constraints: required, must be in the future\n");
+
+        Console.WriteLine("* Departure Airport");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required\n");
+
+        Console.WriteLine("* Destination Airport");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required");
+        Console.WriteLine("                 cannot be the same as Departure Airport\n");
+
+        Console.WriteLine("* Class");
+        Console.WriteLine("  - Type       : enum (Economy, Business, FirstClass)");
+        Console.WriteLine("  - Constraints: required, must match exactly\n");
+    }
+
 
     private void ShowFilterBookingsMenu()
     {
