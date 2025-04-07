@@ -12,7 +12,7 @@ internal static class Program
         var passengerRepo = new PassengersRepository();
         
         var flightService = new FlightService(flightRepo);
-        var passengerService = new PassengerServices(passengerRepo);
+        var passengerService = new PassengerServices(passengerRepo, flightRepo);
         var managerService = new ManagerServices(flightService, passengerRepo);
         
         var printer = new Printer(passengerService, flightService, managerService);

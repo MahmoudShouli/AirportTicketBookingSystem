@@ -4,7 +4,7 @@ using AirportTicketBookingSystem.Repository;
 
 namespace AirportTicketBookingSystem.Services;
 
-public class PassengerServices(IPassengersRepository passengersRepository)
+public class PassengerServices(IPassengersRepository passengersRepository, IFlightRepository flightRepository)
 {
     public Passenger? AuthenticatePassenger(string name)
     {
@@ -18,6 +18,8 @@ public class PassengerServices(IPassengersRepository passengersRepository)
 
     public string CancelBooking(Passenger passenger, string flightId)
     {
+        var flights = flightRepository.LoadFlights();
+        var flight = flights.FirstOrDefault(f => f.Id == flightId);
         var booking = passenger.Bookings.FirstOrDefault(b => b.FlightId == flightId);
 
         if (booking == null)
@@ -27,6 +29,8 @@ public class PassengerServices(IPassengersRepository passengersRepository)
         
         
         passenger.RemoveBooking(booking);
+        flight.IsBooked = false;
+        flightRepository.SaveFlights(flights);
         return "Booking has been cancelled.";
         
         
