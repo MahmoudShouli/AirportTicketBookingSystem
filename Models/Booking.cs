@@ -9,6 +9,6 @@ public class Booking
 
     public override string ToString()
     {
-        return $"Booking for flight {FlightId}";
+        return $"Booking for flight {FlightId} for Passenger {PassengerName}";
     }
 }

@@ -6,9 +6,9 @@ namespace AirportTicketBookingSystem.Services;
 
 public class FlightService(IFlightRepository flightRepository)
 {
-    public List<Flight> SearchFlights(string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null)
+    public List<Flight> SearchFlights(bool isBooked, string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null) 
     {
-        var flights = flightRepository.LoadFlights().Where(f => f.IsBooked == false).ToList();
+        var flights = flightRepository.LoadFlights().Where(f => f.IsBooked == isBooked).ToList();
         var filteredFlights = new List<Flight>();
 
         
