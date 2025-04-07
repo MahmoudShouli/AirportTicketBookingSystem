@@ -21,4 +21,6 @@ public class ManagerServices(FlightService flightService, IPassengersRepository 
         return allBookings.Where(b => flightIDs.Contains(b.FlightId)).ToList();
         
     }
+    
+    
 }
