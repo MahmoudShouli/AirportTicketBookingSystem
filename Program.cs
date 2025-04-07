@@ -13,8 +13,9 @@ internal static class Program
         
         var flightService = new FlightService(flightRepo);
         var passengerService = new PassengerServices(passengerRepo);
+        var managerService = new ManagerServices(flightService, passengerRepo);
         
-        var printer = new Printer(passengerService, flightService);
+        var printer = new Printer(passengerService, flightService, managerService);
         
         printer.ShowMainMenu();
     }

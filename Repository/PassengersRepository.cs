@@ -6,7 +6,8 @@ public class PassengersRepository : IPassengersRepository
 {
         private readonly List<Passenger> _passengers = [
                 new Passenger { Name = "Mahmoud" },
-                new Passenger { Name = "Fatima" }
+                new Passenger { Name = "Fatima" },
+                new Passenger { Name = "Kim" }
         ];
         
         public void AddPassenger(Passenger p)
