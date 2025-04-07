@@ -188,19 +188,41 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("Before you import, these are important details to look out for in your file:");
+            Console.WriteLine("\nBefore you import, these are important details to look out for in your file:");
             Console.WriteLine();
             ShowValidationDetails();
             Console.WriteLine();
+        
+            Console.WriteLine("Enter the path to the CSV file you want to import or Q to exit:");
+            var userInput = Console.ReadLine();
             
-            Console.WriteLine("Enter the path to the CSV file you want to import:");
-            var filePath = Console.ReadLine();
+            if (userInput == "Q")
+                return;
+
+            var flights = FileServices.ConvertFileToFlights(userInput);
+            if (flights == null)
+            {
+                ShowAnyKeyMessage();
+                continue;
+            }
             
-            FileServices.SaveImportedFile(filePath);
-            
+            var isValid = FileServices.Validate(flights);
+            if (!isValid)
+            {
+                ShowAnyKeyMessage("Check again and come back.");
+                
+            }
+            else
+            {
+                Console.WriteLine("All validations passed!");
+                FileServices.SaveImportedFile(userInput);
+                ShowAnyKeyMessage();
+                
+            }
+
+            return;
+
         }
-        
-        
         
     }
 
@@ -241,10 +263,6 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         Console.WriteLine("* Class");
         Console.WriteLine("  - Type       : enum (Economy, Business, FirstClass)");
         Console.WriteLine("  - Constraints: required, must match exactly\n");
-
-        Console.WriteLine("* IsBooked");
-        Console.WriteLine("  - Type       : bool");
-        Console.WriteLine("  - Constraints: defaults to false on import\n");
     }
 
 
