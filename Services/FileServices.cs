@@ -40,11 +40,8 @@ public static class FileServices
             Console.WriteLine("Error importing file: " + ex.Message);
             return null;
         }
-
-        
-
-
     }
+    
     public static void SaveImportedFile(string sourcePath)
     {
         
@@ -62,6 +59,7 @@ public static class FileServices
 
         Console.WriteLine("File imported successfully to the Data directory");
     }
+    
     public static bool Validate(List<Flight> flights)
     {
         var seenIds = new HashSet<string>();
@@ -115,9 +113,6 @@ public static class FileServices
                 Console.WriteLine();
             }
         }
-
         return !hasErrors;
     }
-
-
 }

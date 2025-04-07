@@ -27,13 +27,9 @@ public class PassengerServices(IPassengersRepository passengersRepository, IFlig
             return "Booking not found.";
         }
         
-        
         passenger.RemoveBooking(booking);
         flight.IsBooked = false;
         flightRepository.SaveFlights(flights);
         return "Booking has been cancelled.";
-        
-        
     }
-    
 }
