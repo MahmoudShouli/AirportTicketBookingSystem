@@ -4,7 +4,7 @@ using AirportTicketBookingSystem.Services;
 
 namespace AirportTicketBookingSystem.Utils;
 
-public class Printer(PassengerServices passengerServices, FlightService flightServices)
+public class Printer(PassengerServices passengerServices, FlightService flightServices, ManagerServices managerServices)
 {
     private Passenger _passenger;
     private static void PrintFlights(List<Flight> flights)
@@ -154,7 +154,180 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
 
     private void ShowManagerMenu()
     {
-        throw new NotImplementedException();
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome Manager!");
+            Console.WriteLine("What would you like to do?:");
+            Console.WriteLine("1. Filter bookings");
+            Console.WriteLine("2. Import list of flights from a CSV file");
+            Console.WriteLine("3. Exit");
+            Console.WriteLine("Your choice: ");
+            var userInput = Console.ReadLine();
+            
+            switch (userInput)
+            {
+                case "1":
+                    ShowFilterBookingsMenu();
+                    break;
+                case "2":
+                    ShowImportMenu();
+                    break;
+                case "3":
+                    return;
+                default:
+                    Console.WriteLine("Invalid input. Try again.");
+                    break;
+            
+            }
+        }
+    }
+
+    private void ShowImportMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("\nBefore you import, these are important details to look out for in your file:");
+            Console.WriteLine();
+            ShowValidationDetails();
+            Console.WriteLine();
+        
+            Console.WriteLine("Enter the path to the CSV file you want to import or Q to exit:");
+            var userInput = Console.ReadLine();
+            
+            if (userInput == "Q")
+                return;
+
+            var flights = FileServices.ConvertFileToFlights(userInput);
+            if (flights == null)
+            {
+                ShowAnyKeyMessage();
+                continue;
+            }
+            
+            var isValid = FileServices.Validate(flights);
+            if (!isValid)
+            {
+                ShowAnyKeyMessage("Check again and come back.");
+                
+            }
+            else
+            {
+                Console.WriteLine("All validations passed!");
+                FileServices.SaveImportedFile(userInput);
+                ShowAnyKeyMessage();
+                
+            }
+
+            return;
+
+        }
+        
+    }
+
+    private static void ShowValidationDetails()
+    {
+        Console.WriteLine("Validation Details:\n");
+
+        Console.WriteLine("* Flight ID");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required");
+        Console.WriteLine("                 unique\n");
+        
+        Console.WriteLine("* Price");
+        Console.WriteLine("  - Type       : decimal");
+        Console.WriteLine("  - Constraints: required");
+
+        Console.WriteLine("* Departure Country");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required\n");
+
+        Console.WriteLine("* Destination Country");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required, cannot be the same as Departure Country\n");
+
+        Console.WriteLine("* Departure Date");
+        Console.WriteLine("  - Type       : DateTime");
+        Console.WriteLine("  - Constraints: required, must be in the future\n");
+
+        Console.WriteLine("* Departure Airport");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required\n");
+
+        Console.WriteLine("* Destination Airport");
+        Console.WriteLine("  - Type       : string");
+        Console.WriteLine("  - Constraints: required");
+        Console.WriteLine("                 cannot be the same as Departure Airport\n");
+
+        Console.WriteLine("* Class");
+        Console.WriteLine("  - Type       : enum (Economy, Business, FirstClass)");
+        Console.WriteLine("  - Constraints: required, must match exactly\n");
+    }
+
+
+    private void ShowFilterBookingsMenu()
+    {
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to search by?:");
+            Console.WriteLine("1. All bookings");
+            Console.WriteLine("2. Price");
+            Console.WriteLine("3. Departure Country");
+            Console.WriteLine("4. Destination Country");
+            Console.WriteLine("5. Departure Date");
+            Console.WriteLine("6. Departure Airport");
+            Console.WriteLine("7. Arrival Airport");
+            Console.WriteLine("8. Class");
+            Console.WriteLine("9. Passenger");
+            Console.WriteLine("10. Exit");
+            Console.WriteLine("Your choice: ");
+            var searchParam = Console.ReadLine();
+            var searchVal = "";
+            
+            if (searchParam != "1" && searchParam != "10")
+            {
+                Console.WriteLine("Enter value: ");
+                searchVal = Console.ReadLine();
+            }
+            
+            switch (searchParam)
+            {
+                case "1":
+                    PrintBookings(managerServices.FilterBookings(keyword:"all"));
+                    break;
+                case "2":
+                    PrintBookings(managerServices.FilterBookings(price: Convert.ToDecimal(searchVal)));
+                    break;
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                    PrintBookings(managerServices.FilterBookings(keyword:searchVal));
+                    break;
+                case "8":
+                    if (Enum.TryParse<Class>(searchVal, ignoreCase: true, out var parsedClass))
+                    {
+                        PrintBookings(managerServices.FilterBookings(flightClass: parsedClass));
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid class type. Please enter one of: Economy, Business, FirstClass.");
+                    }
+                    break;
+                case "9":
+                    PrintBookings(managerServices.FilterBookings(passenger:searchVal));
+                    break;
+                case "10":
+                    return;
+                default:
+                    Console.WriteLine("Invalid input. Try again.");
+                    break; 
+            }
+            ShowAnyKeyMessage();
+        }
     }
 
     private void ShowPassengerMenu()
@@ -262,22 +435,22 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             switch (searchParam)
             {
                 case "1":
-                    PrintFlights(flightServices.SearchFlights(keyword:"all"));
+                    PrintFlights(flightServices.SearchFlights(false, keyword:"all"));
                     break;
                 case "2":
-                    PrintFlights(flightServices.SearchFlights(price: Convert.ToDecimal(searchVal)));
+                    PrintFlights(flightServices.SearchFlights(false, price: Convert.ToDecimal(searchVal)));
                     break;
                 case "3":
                 case "4":
                 case "5":
                 case "6":
                 case "7":
-                    PrintFlights(flightServices.SearchFlights(keyword:searchVal));
+                    PrintFlights(flightServices.SearchFlights(false, keyword:searchVal));
                     break;
                 case "8":
                     if (Enum.TryParse<Class>(searchVal, ignoreCase: true, out var parsedClass))
                     {
-                        PrintFlights(flightServices.SearchFlights(flightClass: parsedClass));
+                        PrintFlights(flightServices.SearchFlights(false, flightClass: parsedClass));
                     }
                     else
                     {
