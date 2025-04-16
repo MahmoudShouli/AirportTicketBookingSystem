@@ -4,14 +4,14 @@ namespace AirportTicketBookingSystem.Models;
 
 public class Flight
 {
-    public string Id { get; set; }
-    public decimal Price { get; set; }
-    public string DepartureCountry { get; set; }
-    public string DestinationCountry { get; set; }
-    public DateTime DepartureDate { get; set; }
-    public string DepartureAirport { get; set; }
-    public string DestinationAirport { get; set; }
-    public Class Class { get; set; }
+    public string Id { get; init; } = "";
+    public decimal Price { get; init; }
+    public string DepartureCountry { get; init; } = "";
+    public string DestinationCountry { get; init; } = "";
+    public DateTime DepartureDate { get; init; }
+    public string DepartureAirport { get; init; } = "";
+    public string DestinationAirport { get; init; } = "";
+    public Class Class { get; init; }
     public bool IsBooked { get; set; } = false;
 
     public override string ToString()

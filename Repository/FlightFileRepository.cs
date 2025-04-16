@@ -6,7 +6,7 @@ using AirportTicketBookingSystem.Services;
 
 namespace AirportTicketBookingSystem.Repository;
 
-public class FlightRepository : IFlightRepository
+public class FlightFileRepository : IFlightRepository
 {
     private const string FilePath = @"D:\Computer Engineering\5th Year 2nd Sem\Internship\AirportTicketBookingSystem\Data\Flights.csv";
 

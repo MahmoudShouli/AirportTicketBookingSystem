@@ -8,8 +8,8 @@ internal static class Program
 {
     private static void Main()
     {
-        var flightRepo = new FlightRepository();
-        var passengerRepo = new PassengersRepository();
+        var flightRepo = new FlightFileRepository();
+        var passengerRepo = new PassengersListRepository();
         
         var flightService = new FlightService(flightRepo);
         var passengerService = new PassengerServices(passengerRepo, flightRepo);
@@ -17,6 +17,6 @@ internal static class Program
         
         var printer = new Printer(passengerService, flightService, managerService);
         
-        printer.ShowMainMenu();
+        printer.PrintMainMenu();
     }
 }

@@ -6,38 +6,9 @@ namespace AirportTicketBookingSystem.Utils;
 
 public class Printer(PassengerServices passengerServices, FlightService flightServices, ManagerServices managerServices)
 {
-    private Passenger _passenger;
-    private static void PrintFlights(List<Flight> flights)
-    {
-        
-        if (flights.Count == 0)
-            Console.WriteLine("No flights found.");
-        else
-        {
-            Console.WriteLine();
-            Console.WriteLine("Available Flights:");
-            Console.WriteLine();
-            flights.ForEach(Console.WriteLine);
-        }
-        
-    }
+    private Passenger? _passenger;
     
-    private static void PrintBookings(List<Booking> bookings)
-    {
-        
-        if (bookings.Count == 0)
-            Console.WriteLine("No bookings found.");
-        else
-        {
-            Console.WriteLine();
-            Console.WriteLine("Bookings:");
-            Console.WriteLine();
-            bookings.ForEach(Console.WriteLine);
-        }
-        
-    }
-    
-    public void ShowMainMenu()
+    public void PrintMainMenu()
     {
         while (true)
         {
@@ -46,27 +17,29 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("What is your role?:");
             Console.WriteLine("1. Passenger");
             Console.WriteLine("2. Manager");
+            Console.WriteLine("3. Exit");
             Console.WriteLine("Your choice: ");
-            var userInput = Console.ReadLine();
             
+            var userInput = Console.ReadLine();
             switch (userInput)
             {
                 case "1":
-                    ShowPassengerAuthOptions();
+                    PrintPassengerAuthOptions();
                     break;
                 case "2":
-                    ShowManagerMenu();
+                    PrintManagerMenu();
                     break;
+                case "3":
+                    return;
                 default:
                     Console.WriteLine("Invalid input. Try again.");
                     break;
             
             }
         }
-        
     }
 
-    private void ShowPassengerAuthOptions()
+    private void PrintPassengerAuthOptions()
     {
         while (true)
         {
@@ -80,10 +53,10 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             switch (userInput)
             {
                 case "1":
-                    ShowPassengerLogin();
+                    PrintPassengerLogin();
                     break;
                 case "2":
-                    ShowPassengerSignup();
+                    PrintPassengerSignup();
                     break;
                 case "3":
                     return;
@@ -93,20 +66,17 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             
             }
         }
-
-
-
     }
 
-    private void ShowPassengerSignup()
+    private void PrintPassengerSignup()
     {
         while (true)
         {
             Console.Clear();
             Console.WriteLine("Enter your username or enter Q to exit.");
+            
             var userInput = Console.ReadLine();
-
-            if (userInput == "Q")
+            if (userInput is null || userInput == "Q")
                 return;
             
             _passenger = passengerServices.AuthenticatePassenger(userInput);
@@ -115,19 +85,19 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             {
                 _passenger = new Passenger { Name = userInput };
                 passengerServices.RegisterPassenger(_passenger);
-                ShowPassengerMenu();
+                PrintPassengerMenu();
             }
             else
             {
                 Console.WriteLine("username is already taken. ");
-                ShowAnyKeyMessage();
+                PrintAnyKeyMessage();
             }
         }
         
 
     }
 
-    private void ShowPassengerLogin()
+    private void PrintPassengerLogin()
     {
         while (true)
         {
@@ -135,7 +105,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter your username or enter Q to exit.");
             var userInput = Console.ReadLine();
 
-            if (userInput == "Q")
+            if (userInput is null || userInput == "Q")
                 return;
             
             _passenger = passengerServices.AuthenticatePassenger(userInput);
@@ -143,16 +113,16 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             if (_passenger == null)
             {
                 Console.WriteLine("Can't find you.");
-                ShowAnyKeyMessage();
+                PrintAnyKeyMessage();
             }
             else
             {
-                ShowPassengerMenu();
+                PrintPassengerMenu();
             }
         }
     }
 
-    private void ShowManagerMenu()
+    private void PrintManagerMenu()
     {
         while (true)
         {
@@ -163,15 +133,15 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("2. Import list of flights from a CSV file");
             Console.WriteLine("3. Exit");
             Console.WriteLine("Your choice: ");
-            var userInput = Console.ReadLine();
             
+            var userInput = Console.ReadLine();
             switch (userInput)
             {
                 case "1":
-                    ShowFilterBookingsMenu();
+                    PrintFilterBookingsMenu();
                     break;
                 case "2":
-                    ShowImportMenu();
+                    PrintImportMenu();
                     break;
                 case "3":
                     return;
@@ -183,40 +153,40 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         }
     }
 
-    private void ShowImportMenu()
+    private static void PrintImportMenu()
     {
         while (true)
         {
             Console.Clear();
             Console.WriteLine("\nBefore you import, these are important details to look out for in your file:");
             Console.WriteLine();
-            ShowValidationDetails();
+            PrintValidationDetails();
             Console.WriteLine();
         
             Console.WriteLine("Enter the path to the CSV file you want to import or Q to exit:");
             var userInput = Console.ReadLine();
             
-            if (userInput == "Q")
+            if (userInput is null || userInput == "Q")
                 return;
 
             var flights = FileServices.ConvertFileToFlights(userInput);
-            if (flights == null)
+            if (flights.Count == 0)
             {
-                ShowAnyKeyMessage();
+                PrintAnyKeyMessage("There are no flights to import.");
                 continue;
             }
             
-            var isValid = FileServices.Validate(flights);
+            var isValid = FileServices.ValidateAllFlights(flights);
             if (!isValid)
             {
-                ShowAnyKeyMessage("Check again and come back.");
+                PrintAnyKeyMessage("Check again and come back.");
                 
             }
             else
             {
                 Console.WriteLine("All validations passed!");
                 FileServices.SaveImportedFile(userInput);
-                ShowAnyKeyMessage();
+                PrintAnyKeyMessage();
                 
             }
 
@@ -226,7 +196,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         
     }
 
-    private static void ShowValidationDetails()
+    private static void PrintValidationDetails()
     {
         Console.WriteLine("Validation Details:\n");
 
@@ -266,7 +236,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
     }
 
 
-    private void ShowFilterBookingsMenu()
+    private void PrintFilterBookingsMenu()
     {
         while (true)
         {
@@ -326,16 +296,16 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     Console.WriteLine("Invalid input. Try again.");
                     break; 
             }
-            ShowAnyKeyMessage();
+            PrintAnyKeyMessage();
         }
     }
 
-    private void ShowPassengerMenu()
+    private void PrintPassengerMenu()
     {
         while (true)
         {
             Console.Clear();
-            Console.WriteLine($"Welcome {_passenger.Name}!");
+            Console.WriteLine($"Welcome {_passenger!.Name}!");
             Console.WriteLine("What would you like to do?:");
             Console.WriteLine("1. Search for a flight");
             Console.WriteLine("2. Book a flight");
@@ -348,17 +318,17 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             switch (userInput)
             {
                 case "1":
-                    ShowSearchFlightMenu();
+                    PrintSearchFlightMenu();
                     break;
                 case "2":
-                    BookMenu();
+                    PrintBookMenu();
                     break;
                 case "3":
-                    PrintBookings(_passenger.Bookings);
-                    ShowAnyKeyMessage();
+                    PrintBookings(_passenger!.Bookings);
+                    PrintAnyKeyMessage();
                     break;
                 case "4":
-                    ShowCancellation();
+                    PrintCancellation();
                     break;
                 case "5":
                     return;
@@ -370,7 +340,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         }
     }
 
-    private void ShowCancellation()
+    private void PrintCancellation()
     {
         while (true)
         {
@@ -378,14 +348,14 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter the flight ID that you booked");
             var userInput = Console.ReadLine();
             
-            var result = passengerServices.CancelBooking(_passenger, userInput);
+            var result = passengerServices.CancelBooking(_passenger!, userInput!);
 
-            ShowAnyKeyMessage(result);
+            PrintAnyKeyMessage(result);
             return;
         }
     }
 
-    private void BookMenu()
+    private void PrintBookMenu()
     {
         while (true)
         {
@@ -393,21 +363,21 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter the flight ID");
             var userInput = Console.ReadLine();
             
-            var booking = flightServices.BookFlight(_passenger, userInput);
+            var booking = flightServices.BookFlight(_passenger!, userInput!);
 
             if (booking == null)
             {
-                ShowAnyKeyMessage("This flight is already booked or it doesn't exist.");
+                PrintAnyKeyMessage("This flight is already booked or it doesn't exist.");
             }
             else
             {
-                ShowAnyKeyMessage("Flight booked!");
+                PrintAnyKeyMessage("Flight booked!");
                 return;
             }
         }
     }
 
-    private void ShowSearchFlightMenu()
+    private void PrintSearchFlightMenu()
     {
         while (true)
         {
@@ -463,11 +433,37 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                     Console.WriteLine("Invalid input. Try again.");
                     break; 
             }
-            ShowAnyKeyMessage();
+            PrintAnyKeyMessage();
         }
     }
     
-    private static void ShowAnyKeyMessage(string? message = null)
+    private static void PrintFlights(List<Flight> flights)
+    {
+        if (flights.Count == 0)
+            Console.WriteLine("No flights found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Available Flights:");
+            Console.WriteLine();
+            flights.ForEach(Console.WriteLine);
+        }
+    }
+    
+    private static void PrintBookings(List<Booking> bookings)
+    {
+        if (bookings.Count == 0)
+            Console.WriteLine("No bookings found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Bookings:");
+            Console.WriteLine();
+            bookings.ForEach(Console.WriteLine);
+        }
+    }
+    
+    private static void PrintAnyKeyMessage(string? message = null)
     {
         Console.WriteLine();
         Console.WriteLine(message + " Press any key to continue...");

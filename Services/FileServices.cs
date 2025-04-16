@@ -9,8 +9,6 @@ public static class FileServices
     {
         try
         {
-            var flights = new List<Flight>();
-            
             var lines = File.ReadAllLines(path);
 
             return lines
@@ -38,7 +36,7 @@ public static class FileServices
         catch (Exception ex)
         {
             Console.WriteLine("Error importing file: " + ex.Message);
-            return null;
+            return new List<Flight>();
         }
     }
     
@@ -60,59 +58,60 @@ public static class FileServices
         Console.WriteLine("File imported successfully to the Data directory");
     }
     
-    public static bool Validate(List<Flight> flights)
+    public static bool ValidateAllFlights(List<Flight> flights)
     {
         var seenIds = new HashSet<string>();
-        var hasErrors = false;
+        var isValid = true;
 
         Console.WriteLine("\nValidation Report:\n");
 
         foreach (var flight in flights)
         {
-            var errors = new List<string>();
-
-            // Flight ID
-            if (string.IsNullOrWhiteSpace(flight.Id))
-                errors.Add("Flight ID is required.");
-            else if (!seenIds.Add(flight.Id))
-                errors.Add("Flight ID must be unique.");
-
-            // Price
-            if (flight.Price <= 0)
-                errors.Add("Price must be greater than 0.");
-
-            // Departure Country
-            if (string.IsNullOrWhiteSpace(flight.DepartureCountry))
-                errors.Add("Departure Country is required.");
-
-            // Destination Country
-            if (string.IsNullOrWhiteSpace(flight.DestinationCountry))
-                errors.Add("Destination Country is required.");
-            else if (flight.DestinationCountry.Equals(flight.DepartureCountry, StringComparison.OrdinalIgnoreCase))
-                errors.Add("Destination Country cannot be the same as Departure Country.");
-
-            // Departure Date
-            if (flight.DepartureDate <= DateTime.Now)
-                errors.Add("Departure Date must be in the future.");
-
-            // Departure Airport
-            if (string.IsNullOrWhiteSpace(flight.DepartureAirport))
-                errors.Add("Departure Airport is required.");
-
-            // Destination Airport
-            if (string.IsNullOrWhiteSpace(flight.DestinationAirport))
-                errors.Add("Destination Airport is required.");
-            else if (flight.DestinationAirport.Equals(flight.DepartureAirport, StringComparison.OrdinalIgnoreCase))
-                errors.Add("Destination Airport cannot be the same as Departure Airport.");
-            
+            var errors = ValidateSingleFlight(flight, seenIds);
             if (errors.Count > 0)
             {
-                hasErrors = true;
-                Console.WriteLine($"Flight {flight.Id} is invalid because:");
-                errors.ForEach(e => Console.WriteLine($"   - {e}"));
+                isValid = false;
+                Console.WriteLine($"Flight {flight.Id ?? "[no ID]"} is invalid because:");
+                errors.ForEach(error => Console.WriteLine($"   - {error}"));
                 Console.WriteLine();
             }
         }
-        return !hasErrors;
+
+        return isValid;
     }
+
+    private static List<string> ValidateSingleFlight(Flight flight, HashSet<string> seenIds)
+    {
+        var errors = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(flight.Id))
+            errors.Add("Flight ID is required.");
+        else if (!seenIds.Add(flight.Id))
+            errors.Add("Flight ID must be unique.");
+
+        if (flight.Price <= 0)
+            errors.Add("Price must be greater than 0.");
+
+        if (string.IsNullOrWhiteSpace(flight.DepartureCountry))
+            errors.Add("Departure Country is required.");
+
+        if (string.IsNullOrWhiteSpace(flight.DestinationCountry))
+            errors.Add("Destination Country is required.");
+        else if (flight.DestinationCountry.Equals(flight.DepartureCountry, StringComparison.OrdinalIgnoreCase))
+            errors.Add("Destination Country cannot be the same as Departure Country.");
+
+        if (flight.DepartureDate <= DateTime.Now)
+            errors.Add("Departure Date must be in the future.");
+
+        if (string.IsNullOrWhiteSpace(flight.DepartureAirport))
+            errors.Add("Departure Airport is required.");
+
+        if (string.IsNullOrWhiteSpace(flight.DestinationAirport))
+            errors.Add("Destination Airport is required.");
+        else if (flight.DestinationAirport.Equals(flight.DepartureAirport, StringComparison.OrdinalIgnoreCase))
+            errors.Add("Destination Airport cannot be the same as Departure Airport.");
+
+        return errors;
+    }
+
 }
