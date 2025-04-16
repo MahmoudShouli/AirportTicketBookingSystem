@@ -8,13 +8,11 @@ public class FlightService(IFlightRepository flightRepository)
 {
     public List<Flight> SearchFlights(bool isBooked, string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null) 
     {
-        var flights = flightRepository.LoadFlights().Where(f => f.IsBooked == isBooked).ToList();
+        var flights = flightRepository.LoadFlights().Where(flight => flight.IsBooked == isBooked).ToList();
         var filteredFlights = new List<Flight>();
-
         
         if (!string.IsNullOrWhiteSpace(keyword))
         {
-            
             var lowerKeyword = keyword.ToLower();
             
             if (lowerKeyword == "all")
@@ -47,7 +45,7 @@ public class FlightService(IFlightRepository flightRepository)
         return filteredFlights;
     }
     
-    public Booking? BookFlight(Passenger passenger, string? flightId)
+    public Booking? BookFlight(Passenger passenger, string flightId)
     {
         var flights = flightRepository.LoadFlights();
         var flightToBook = flights.FirstOrDefault(f=> f.Id == flightId);

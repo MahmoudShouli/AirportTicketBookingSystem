@@ -2,7 +2,7 @@
 
 namespace AirportTicketBookingSystem.Repository;
 
-public class PassengersRepository : IPassengersRepository
+public class PassengersListRepository : IPassengersRepository
 {
         private readonly List<Passenger> _passengers = [
                 new Passenger { Name = "Mahmoud" },

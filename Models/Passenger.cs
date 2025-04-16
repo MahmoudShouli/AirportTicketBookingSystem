@@ -1,9 +1,11 @@
-﻿namespace AirportTicketBookingSystem.Models;
+﻿using System.Collections;
 
+namespace AirportTicketBookingSystem.Models;
 
+#nullable disable
 public class Passenger
 {
-    public string Name { get; set; }
+    public string Name { get; init; }
     public List<Booking> Bookings { get; set; } = new List<Booking>();
 
     public void AddBooking(Booking booking)

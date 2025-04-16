@@ -23,9 +23,10 @@ public class PassengerServices(IPassengersRepository passengersRepository, IFlig
         var booking = passenger.Bookings.FirstOrDefault(b => b.FlightId == flightId);
 
         if (booking == null)
-        {
             return "Booking not found.";
-        }
+        
+        if (flight is null)
+            return "Flight not found.";
         
         passenger.RemoveBooking(booking);
         flight.IsBooked = false;
