@@ -1,7 +1,7 @@
 ﻿using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
 
-namespace AirportTicketBookingSystem.Services;
+namespace AirportTicketBookingSystem.Services.Implementations;
 
 public static class FileServices
 {

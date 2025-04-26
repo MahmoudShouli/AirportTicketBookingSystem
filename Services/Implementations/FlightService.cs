@@ -2,9 +2,9 @@
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 
-namespace AirportTicketBookingSystem.Services;
+namespace AirportTicketBookingSystem.Services.Implementations;
 
-public class FlightService(IFlightRepository flightRepository)
+public class FlightService(IFlightRepository flightRepository) : IFlightServices
 {
     public List<Flight> SearchFlights(bool isBooked, string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null) 
     {
@@ -19,11 +19,11 @@ public class FlightService(IFlightRepository flightRepository)
                 return flights;
             
             filteredFlights = flights.Where(f =>
-                f.Id.ToLower().Equals(lowerKeyword)||
-                f.DepartureCountry.ToLower().Equals(lowerKeyword) ||
-                f.DestinationCountry.ToLower().Equals(lowerKeyword) ||
-                f.DepartureAirport.ToLower().Equals(lowerKeyword) ||
-                f.DestinationAirport.ToLower().Equals(lowerKeyword) 
+                f.Id.ToLower().Equals(lowerKeyword, StringComparison.OrdinalIgnoreCase)||
+                f.DepartureCountry.ToLower().Equals(lowerKeyword, StringComparison.OrdinalIgnoreCase) ||
+                f.DestinationCountry.ToLower().Equals(lowerKeyword, StringComparison.OrdinalIgnoreCase) ||
+                f.DepartureAirport.ToLower().Equals(lowerKeyword, StringComparison.OrdinalIgnoreCase) ||
+                f.DestinationAirport.ToLower().Equals(lowerKeyword, StringComparison.OrdinalIgnoreCase) 
             ).ToList();
         }
         
