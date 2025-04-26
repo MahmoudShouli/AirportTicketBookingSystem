@@ -154,7 +154,7 @@ public class Printer(IPassengerServices passengerServices, IFlightServices fligh
         }
     }
 
-    private static void PrintImportMenu()
+    private void PrintImportMenu()
     {
         while (true)
         {
@@ -177,7 +177,7 @@ public class Printer(IPassengerServices passengerServices, IFlightServices fligh
                 continue;
             }
             
-            var isValid = FileServices.ValidateAllFlights(flights);
+            var isValid = flightServices.ValidateAllFlights(flights);
             if (!isValid)
             {
                 PrintAnyKeyMessage("Check again and come back.");
