@@ -368,6 +368,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             if (booking == null)
             {
                 PrintAnyKeyMessage("This flight is already booked or it doesn't exist.");
+                break;
             }
             else
             {

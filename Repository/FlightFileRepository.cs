@@ -8,7 +8,7 @@ namespace AirportTicketBookingSystem.Repository;
 
 public class FlightFileRepository : IFlightRepository
 {
-    private const string FilePath = @"D:\Computer Engineering\5th Year 2nd Sem\Internship\AirportTicketBookingSystem\Data\Flights.csv";
+    private const string FilePath = @"D:\Computer Engineering\5th Year 2nd Sem\Internship\Excercises\AirportTicketBookingSystem\Data\Flights.csv";
 
     public List<Flight> LoadFlights()
     {
