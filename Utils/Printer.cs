@@ -1,10 +1,11 @@
 ﻿using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Services.Implementations;
 
 namespace AirportTicketBookingSystem.Utils;
 
-public class Printer(PassengerServices passengerServices, FlightService flightServices, ManagerServices managerServices)
+public class Printer(IPassengerServices passengerServices, IFlightServices flightServices, IManagerServices managerServices)
 {
     private Passenger? _passenger;
     
@@ -76,7 +77,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter your username or enter Q to exit.");
             
             var userInput = Console.ReadLine();
-            if (userInput is null || userInput == "Q")
+            if (userInput is null || userInput.Equals("Q", StringComparison.OrdinalIgnoreCase))
                 return;
             
             _passenger = passengerServices.AuthenticatePassenger(userInput);
@@ -105,7 +106,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter your username or enter Q to exit.");
             var userInput = Console.ReadLine();
 
-            if (userInput is null || userInput == "Q")
+            if (userInput is null || userInput.Equals("Q", StringComparison.OrdinalIgnoreCase))
                 return;
             
             _passenger = passengerServices.AuthenticatePassenger(userInput);
@@ -153,7 +154,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
         }
     }
 
-    private static void PrintImportMenu()
+    private void PrintImportMenu()
     {
         while (true)
         {
@@ -166,7 +167,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
             Console.WriteLine("Enter the path to the CSV file you want to import or Q to exit:");
             var userInput = Console.ReadLine();
             
-            if (userInput is null || userInput == "Q")
+            if (userInput is null || userInput.Equals("Q", StringComparison.OrdinalIgnoreCase))
                 return;
 
             var flights = FileServices.ConvertFileToFlights(userInput);
@@ -176,7 +177,7 @@ public class Printer(PassengerServices passengerServices, FlightService flightSe
                 continue;
             }
             
-            var isValid = FileServices.ValidateAllFlights(flights);
+            var isValid = flightServices.ValidateAllFlights(flights);
             if (!isValid)
             {
                 PrintAnyKeyMessage("Check again and come back.");

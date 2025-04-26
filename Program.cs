@@ -1,5 +1,5 @@
 ﻿using AirportTicketBookingSystem.Repository;
-using AirportTicketBookingSystem.Services;
+using AirportTicketBookingSystem.Services.Implementations;
 using AirportTicketBookingSystem.Utils;
 
 namespace AirportTicketBookingSystem;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace AirportTicketBookingSystem.Models;
+﻿namespace AirportTicketBookingSystem.Models;
 
 #nullable disable
 public class Passenger

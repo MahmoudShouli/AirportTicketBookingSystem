@@ -1,10 +1,9 @@
-﻿using AirportTicketBookingSystem.Enums;
-using AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 
-namespace AirportTicketBookingSystem.Services;
+namespace AirportTicketBookingSystem.Services.Implementations;
 
-public class PassengerServices(IPassengersRepository passengersRepository, IFlightRepository flightRepository)
+public class PassengerServices(IPassengersRepository passengersRepository, IFlightRepository flightRepository) : IPassengerServices
 {
     public Passenger? AuthenticatePassenger(string name)
     {

@@ -2,9 +2,9 @@
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repository;
 
-namespace AirportTicketBookingSystem.Services;
+namespace AirportTicketBookingSystem.Services.Implementations;
 
-public class ManagerServices(FlightService flightService, IPassengersRepository passengersRepository)
+public class ManagerServices(IFlightServices flightService, IPassengersRepository passengersRepository) : IManagerServices
 {
     public List<Booking> FilterBookings(string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null, string? passenger = null)
     {
