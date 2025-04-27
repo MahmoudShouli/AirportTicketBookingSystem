@@ -12,18 +12,7 @@ public class FlightFileRepository : IFlightRepository
     public FlightFileRepository(string filePath)
     {
         _filePath = filePath;
-        _flights = FileUtil.ConvertFileToList<Flight>(filePath, parts => new Flight
-        {
-            Id = parts[0],
-            Price = decimal.Parse(parts[1]),
-            DepartureCountry = parts[2],
-            DestinationCountry = parts[3],
-            DepartureDate = DateTime.Parse(parts[4]),
-            DepartureAirport = parts[5],
-            DestinationAirport = parts[6],
-            FlightClass = (FlightClass)Enum.Parse(typeof(FlightClass), parts[7], ignoreCase: true),
-            IsBooked = bool.Parse(parts[8])
-        });
+        _flights = FileUtil.ConvertFileToList(filePath, CsvUtil.CsvToFlight);
     }
 
     public List<Flight> GetAllFlights() => _flights;
@@ -63,16 +52,7 @@ public class FlightFileRepository : IFlightRepository
     public void SaveFlights(List<Flight> flights)
     {
         _flights = flights;
-        
-        var lines = new List<string> { "FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked" }
-            .Concat(flights.Select(flight => 
-                $"{flight.Id},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
-                $"{flight.DepartureDate:yyyy-MM-ddTHH:mm:ss},{flight.DepartureAirport},{flight.DestinationAirport}," +
-                $"{flight.FlightClass},{flight.IsBooked}"
-            ))
-            .ToList();
-
-        
+        var lines = CsvUtil.FlightsToCsv(flights);
         File.WriteAllLines(_filePath, lines);
     }
 }

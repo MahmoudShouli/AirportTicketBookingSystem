@@ -18,7 +18,7 @@ public static class ScannerUtil
                 return result;
             }
 
-            MenuPrinter.PrintInvalidMessage("enter a valid integer.");
+            HelperPrinter.PrintInvalidMessage("enter a valid integer.");
         }
     }
     
@@ -29,7 +29,7 @@ public static class ScannerUtil
         string? input = Console.ReadLine();
         while (string.IsNullOrWhiteSpace(input))
         {
-            MenuPrinter.PrintInvalidMessage("enter a valid non-empty string.");
+            HelperPrinter.PrintInvalidMessage("enter a valid non-empty string.");
             input = Console.ReadLine();
         }
 

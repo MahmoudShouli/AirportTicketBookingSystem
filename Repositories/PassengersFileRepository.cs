@@ -11,16 +11,7 @@ public class PassengersFileRepository : IPassengersRepository
     public PassengersFileRepository(string filePath)
     {
         _filePath = filePath;
-        _passengers = FileUtil.ConvertFileToList<Passenger>(filePath, parts => new Passenger
-        {
-            Name = parts[0],
-            Password = parts[1],
-            Bookings = string.IsNullOrWhiteSpace(parts[2])
-                ? new List<Booking>()
-                : parts[2].Split(';', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(flightId => new Booking { PassengerName = parts[0], FlightId = flightId })
-                    .ToList()
-        });
+        _passengers = FileUtil.ConvertFileToList(filePath, CsvUtil.CsvToPassenger);
     }
 
     public List<Passenger> GetAllPassengers() => _passengers;
@@ -33,14 +24,7 @@ public class PassengersFileRepository : IPassengersRepository
     public void SavePassengers(List<Passenger> passengers)
     { 
         _passengers = passengers;
-        
-        var lines = new List<string> { "Name,Password,Bookings" }
-            .Concat(passengers.Select(passenger =>
-                $"{passenger.Name},{passenger.Password}," +
-                $"{string.Join(';', passenger.Bookings.Select(b => b.FlightId))}"
-            ))
-            .ToList();
-                
+        var lines = CsvUtil.PassengersToCsv(passengers);
         File.WriteAllLines(_filePath, lines);
     }
 
