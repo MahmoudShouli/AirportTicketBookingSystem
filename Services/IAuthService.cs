@@ -1,6 +1,4 @@
-﻿using AirportTicketBookingSystem.Models;
-
-namespace AirportTicketBookingSystem.Services;
+﻿namespace AirportTicketBookingSystem.Services;
 
 public interface IAuthService
 {
