@@ -12,7 +12,7 @@ public class FlightFileRepository : IFlightRepository
     public FlightFileRepository(string filePath)
     {
         _filePath = filePath;
-        _flights = FileUtilities.ConvertFileToList<Flight>(filePath, parts => new Flight
+        _flights = FileUtil.ConvertFileToList<Flight>(filePath, parts => new Flight
         {
             Id = parts[0],
             Price = decimal.Parse(parts[1]),

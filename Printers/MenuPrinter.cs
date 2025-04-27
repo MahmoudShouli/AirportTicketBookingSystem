@@ -1,37 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿namespace AirportTicketBookingSystem.Printers;
 
-namespace AirportTicketBookingSystem.Printers;
-
-public class MenuPrinter
+public static class MenuPrinter
 {
-    private readonly ILogger<MenuPrinter> _logger;
-
-    public MenuPrinter(ILogger<MenuPrinter> logger)
-    {
-        _logger = logger;
-    }
-
-    public void PrintWelcomeMessage()
-    {
-        var message = """
-                      
-                      Hello and Welcome to the Airport Ticket Booking System!
-                      
-                      """;
-        _logger.LogInformation(message);
-    }
-
-    public void PrintFinishMessage()
-    {
-        var message = """
-
-                      Thank you for using our system!
-
-                      """;
-        _logger.LogInformation(message);
-    }
-
-    public void PrintMainMenu()
+    public static void PrintMainMenu()
     {
         var message = """
 
@@ -39,17 +10,16 @@ public class MenuPrinter
                       --------------------
                       
                       
-                      What is your role?
                       1- Login
                       2- Sign up
                       3- Exit
                       
 
                       """;
-        _logger.LogInformation(message);
+        Console.WriteLine(message);
     }
     
-    public void PrintManagerMenu()
+    public static void PrintManagerMenu()
     {
         var message = """
 
@@ -63,10 +33,10 @@ public class MenuPrinter
 
 
                       """;
-        _logger.LogInformation(message);
+        Console.WriteLine(message);
     }
 
-    public void PrintFilterBookingsMenu()
+    public static void PrintFilterBookingsMenu()
     {
         var message = """
 
@@ -86,10 +56,10 @@ public class MenuPrinter
 
                       """;
 
-        _logger.LogInformation(message);
+        Console.WriteLine(message);
     }
 
-    public void PrintPassengerMenu()
+    public static void PrintPassengerMenu()
     {
         var message = """
 
@@ -104,10 +74,10 @@ public class MenuPrinter
 
                       """;
 
-        _logger.LogInformation(message);
+        Console.WriteLine(message);
     }
 
-    public void PrintSearchFlightsMenu()
+    public static void PrintSearchFlightsMenu()
     {
         var message = """
 
@@ -120,12 +90,37 @@ public class MenuPrinter
                       4. Destination Country
                       5. Departure Date
                       6. Departure Airport
-                      7. Arrival Airport
+                      7. Destination Airport
                       8. Class
                       9. Exit
 
                       """;
 
-        _logger.LogInformation(message);
+        Console.WriteLine(message);
+    }
+    
+    public static void PrintWelcomeMessage()
+    {
+        var message = """
+
+                      Hello and Welcome to the Airport Ticket Booking System!
+
+                      """;
+        Console.WriteLine(message);
+    }
+
+    public static void PrintFinishMessage()
+    {
+        var message = """
+
+                      Thank you for using our system!
+
+                      """;
+        Console.WriteLine(message);
+    }
+
+    public static void PrintInvalidMessage(string prompt)
+    {
+        Console.WriteLine("Invalid input, please " + prompt + "\n");
     }
 }

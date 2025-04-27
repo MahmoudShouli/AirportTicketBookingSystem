@@ -11,7 +11,7 @@ public class PassengersFileRepository : IPassengersRepository
     public PassengersFileRepository(string filePath)
     {
         _filePath = filePath;
-        _passengers = FileUtilities.ConvertFileToList<Passenger>(filePath, parts => new Passenger
+        _passengers = FileUtil.ConvertFileToList<Passenger>(filePath, parts => new Passenger
         {
             Name = parts[0],
             Password = parts[1],

@@ -1,9 +1,6 @@
-﻿using AirportTicketBookingSystem.Enums;
-using AirportTicketBookingSystem.Models;
+﻿namespace AirportTicketBookingSystem.Utilities;
 
-namespace AirportTicketBookingSystem.Services.Implementations;
-
-public static class FileServices
+public static class FileUtil
 {
     public static List<T> ConvertFileToList<T>(string path, Func<string[], T> mapFunc)
     {
