@@ -11,7 +11,7 @@ public static class MenuPrinter
                       
                       
                       1- Login
-                      2- Sign up
+                      2- Register
                       3- Exit
                       
 

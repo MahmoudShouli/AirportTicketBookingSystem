@@ -31,4 +31,17 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
             
         UserContext.SetCurrentUser(passenger);
     }
+
+    public void Register(string name, string password)
+    {
+        var passenger = passengersRepository.SearchPassengerByName(name);
+
+        if (passenger != null)
+        {
+            throw new PassengerAlreadyExistsException(name);
+        }
+        
+        var newPassenger = new Passenger(name, password);
+        passengersRepository.AddPassenger(newPassenger);
+    }
 }

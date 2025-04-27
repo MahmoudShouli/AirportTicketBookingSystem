@@ -22,7 +22,7 @@ public static class MenuHandler
                     LoginHandler();
                     break;
                 case 2:
-                    SignUpHandler();
+                    RegisterHandler();
                     break;
                 case 3:
                     MenuPrinter.PrintFinishMessage();
@@ -62,18 +62,33 @@ public static class MenuHandler
         }
     }
 
-    private static void SignUpHandler()
+    private static void RegisterHandler()
     {
-        throw new NotImplementedException();
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("==== Registration ====\n");
+            
+            var name = ScannerUtil.ScanNonEmptyString("your name: ");
+            var password = ScannerUtil.ScanNonEmptyString("your password: ");
+            
+            bool success = AppStartup.AuthController.Register(name, password);
+
+            if (success)
+            {
+                PassengerMenuHandler();
+            }
+            Thread.Sleep(4000);
+        }
     }
     
     private static void ManagerMenuHandler()
     {
-        throw new NotImplementedException();
+        
     }
 
     private static void PassengerMenuHandler()
     {
-        throw new NotImplementedException();
+        
     }
 }

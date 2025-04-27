@@ -43,6 +43,12 @@ public class PassengersFileRepository : IPassengersRepository
                 
         File.WriteAllLines(_filePath, lines);
     }
+
+    public void AddPassenger(Passenger passenger)
+    {
+        _passengers.Add(passenger);
+        SavePassengers(_passengers);
+    }
 }
 
 

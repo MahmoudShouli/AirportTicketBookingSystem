@@ -12,11 +12,11 @@ public class Passenger : User
         Bookings = new List<Booking>();
         UserType = UserType.Passenger;
     }
-    public Passenger(string name, string password, List<Booking> bookings)
+    public Passenger(string name, string password)
     {
         Name = name;
         Password = password;
-        Bookings = bookings;
+        Bookings = new List<Booking>();
         UserType = UserType.Passenger;
     }
 
