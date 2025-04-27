@@ -4,7 +4,7 @@ namespace AirportTicketBookingSystem.Repository;
 
 public interface IPassengersRepository
 {
-    Passenger? GetPassengerByName(string passengerName);
-    void AddPassenger(Passenger passenger);
     List<Passenger> GetAllPassengers();
+    Passenger? SearchPassengerByName(string passengerName);
+    void SavePassengers(List<Passenger> passengers);
 }
