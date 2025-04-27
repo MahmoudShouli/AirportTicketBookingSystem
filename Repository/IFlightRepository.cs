@@ -4,6 +4,7 @@ namespace AirportTicketBookingSystem.Repository;
 
 public interface IFlightRepository
 {
-     List<Flight> LoadFlights();
+     List<Flight> GetAllFlights();
+     List<Flight> SearchFlights(FlightFilter filter);
      void SaveFlights(List<Flight> flights);
 }
