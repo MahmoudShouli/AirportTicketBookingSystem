@@ -2,6 +2,7 @@
 
 namespace AirportTicketBookingSystem.Repositories;
 
+// Data Access for flights
 public interface IFlightRepository
 {
      List<Flight> GetAllFlights();

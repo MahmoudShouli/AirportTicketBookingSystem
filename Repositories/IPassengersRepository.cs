@@ -2,6 +2,7 @@
 
 namespace AirportTicketBookingSystem.Repositories;
 
+// Data Access for passengers
 public interface IPassengersRepository
 {
     List<Passenger> GetAllPassengers();

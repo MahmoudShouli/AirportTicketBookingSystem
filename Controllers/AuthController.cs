@@ -2,6 +2,7 @@
 
 namespace AirportTicketBookingSystem.Controllers;
 
+// controller for authentication
 public class AuthController(IAuthService authService)
 {
     public bool Login(string name, string password) 

@@ -21,8 +21,7 @@ public static class ScannerUtil
             MenuPrinter.PrintInvalidMessage("enter a valid integer.");
         }
     }
-
-
+    
     public static string ScanNonEmptyString(string prompt)
     {
         Console.WriteLine("Enter " + prompt);
@@ -36,5 +35,4 @@ public static class ScannerUtil
 
         return input;
     }
-
 }
