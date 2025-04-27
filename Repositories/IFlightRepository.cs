@@ -1,6 +1,6 @@
 ﻿using AirportTicketBookingSystem.Models;
 
-namespace AirportTicketBookingSystem.Repository;
+namespace AirportTicketBookingSystem.Repositories;
 
 public interface IFlightRepository
 {

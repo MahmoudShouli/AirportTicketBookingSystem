@@ -1,7 +1,7 @@
 ﻿using AirportTicketBookingSystem.Models;
-using AirportTicketBookingSystem.Services.Implementations;
+using AirportTicketBookingSystem.Utilities;
 
-namespace AirportTicketBookingSystem.Repository;
+namespace AirportTicketBookingSystem.Repositories;
 
 public class PassengersFileRepository : IPassengersRepository
 {
@@ -11,7 +11,7 @@ public class PassengersFileRepository : IPassengersRepository
     public PassengersFileRepository(string filePath)
     {
         _filePath = filePath;
-        _passengers = FileServices.ConvertFileToList<Passenger>(filePath, parts => new Passenger
+        _passengers = FileUtilities.ConvertFileToList<Passenger>(filePath, parts => new Passenger
         {
             Name = parts[0],
             Password = parts[1],

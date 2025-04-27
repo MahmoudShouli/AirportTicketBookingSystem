@@ -1,8 +1,8 @@
 ﻿using AirportTicketBookingSystem.Enums;
 using AirportTicketBookingSystem.Models;
-using AirportTicketBookingSystem.Services.Implementations;
+using AirportTicketBookingSystem.Utilities;
 
-namespace AirportTicketBookingSystem.Repository;
+namespace AirportTicketBookingSystem.Repositories;
 
 public class FlightFileRepository : IFlightRepository
 {
@@ -12,7 +12,7 @@ public class FlightFileRepository : IFlightRepository
     public FlightFileRepository(string filePath)
     {
         _filePath = filePath;
-        _flights = FileServices.ConvertFileToList<Flight>(filePath, parts => new Flight
+        _flights = FileUtilities.ConvertFileToList<Flight>(filePath, parts => new Flight
         {
             Id = parts[0],
             Price = decimal.Parse(parts[1]),
