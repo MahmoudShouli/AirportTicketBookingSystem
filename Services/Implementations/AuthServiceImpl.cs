@@ -9,8 +9,7 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
 {
     public void Login(string name, string password)
     {
-        // hardcoded manager
-        if (name.Equals("Mahmoud", StringComparison.OrdinalIgnoreCase) && password.Equals("123"))
+        if (IsAdmin(name, password))
         {
             var manager = new Manager (name, password);
             
@@ -36,12 +35,18 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
     {
         var passenger = passengersRepository.SearchPassengerByName(name);
 
-        if (passenger != null)
+        if (passenger != null || IsAdmin(name, password))
         {
-            throw new PassengerAlreadyExistsException(name);
+            throw new UserAlreadyExistsException(name);
         }
-        
+
         var newPassenger = new Passenger(name, password);
         passengersRepository.AddPassenger(newPassenger);
+    }
+
+    private bool IsAdmin(string name, string password)
+    {
+        // hardcoded manager
+        return (name.Equals("Mahmoud", StringComparison.OrdinalIgnoreCase) && password.Equals("123"));
     }
 }
