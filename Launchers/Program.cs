@@ -14,6 +14,7 @@ class Program
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
         
+        AppStartup.Init();
         MenuHandler.MainMenuHandler();
     }
 }
