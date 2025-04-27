@@ -30,7 +30,7 @@ public static class ScannerUtil
         string? input = Console.ReadLine();
         while (string.IsNullOrWhiteSpace(input))
         {
-            Console.WriteLine("Input cannot be empty. Enter " + prompt);
+            MenuPrinter.PrintInvalidMessage("enter a valid non-empty string.");
             input = Console.ReadLine();
         }
 
