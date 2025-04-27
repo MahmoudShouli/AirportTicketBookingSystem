@@ -5,7 +5,7 @@ namespace AirportTicketBookingSystem.Services.Implementations;
 
 public static class FileServices
 {
-    public static List<Flight> ConvertFileToFlights(string path)
+    public static List<T> ConvertFileToList<T>(string path, Func<string[], T> mapFunc)
     {
         try
         {
@@ -16,31 +16,17 @@ public static class FileServices
                 .Select(line =>
                 {
                     var parts = line.Split(',');
-
-                    return new Flight
-                    {
-                        Id = parts[0],
-                        Price = decimal.Parse(parts[1]),
-                        DepartureCountry = parts[2],
-                        DestinationCountry = parts[3],
-                        DepartureDate = DateTime.Parse(parts[4]),
-                        DepartureAirport = parts[5],
-                        DestinationAirport = parts[6],
-                        FlightClass = (FlightClass)Enum.Parse(typeof(FlightClass), parts[7], ignoreCase: true),
-                        IsBooked = bool.Parse(parts[8])
-
-                    };
+                    return mapFunc(parts);
                 })
                 .ToList();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Console.WriteLine("Error importing file: " + ex.Message);
-            return new List<Flight>();
+            return new List<T>();
         }
     }
     
-    public static void SaveImportedFile(string sourcePath)
+    public static void SaveImportedFile(string sourcePath, string fileName)
     {
         
         var projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\"));
@@ -51,10 +37,8 @@ public static class FileServices
             Directory.CreateDirectory(dataDirectory);
         }
         
-        var destinationPath = Path.Combine(dataDirectory, "Flights.csv");
+        var destinationPath = Path.Combine(dataDirectory, fileName);
         
         File.Copy(sourcePath, destinationPath, overwrite: true);
-
-        Console.WriteLine("File imported successfully to the Data directory");
     }
 }
