@@ -6,7 +6,7 @@ namespace AirportTicketBookingSystem.Services.Implementations;
 
 public class ManagerServices(IFlightServices flightService, IPassengersRepository passengersRepository) : IManagerServices
 {
-    public List<Booking> FilterBookings(string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null, string? passenger = null)
+    public List<Booking> FilterBookings(string? keyword = null, decimal? price = null, DateTime? date = null, FlightClass? flightClass = null, string? passenger = null)
     {
         if (passenger != null)
         {

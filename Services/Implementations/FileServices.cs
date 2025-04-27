@@ -26,7 +26,7 @@ public static class FileServices
                         DepartureDate = DateTime.Parse(parts[4]),
                         DepartureAirport = parts[5],
                         DestinationAirport = parts[6],
-                        Class = (Class)Enum.Parse(typeof(Class), parts[7], ignoreCase: true),
+                        FlightClass = (FlightClass)Enum.Parse(typeof(FlightClass), parts[7], ignoreCase: true),
                         IsBooked = bool.Parse(parts[8])
 
                     };

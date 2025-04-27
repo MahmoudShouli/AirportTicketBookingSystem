@@ -6,5 +6,5 @@ namespace AirportTicketBookingSystem.Services;
 public interface IManagerServices
 {
     public List<Booking> FilterBookings(string? keyword = null, decimal? price = null, DateTime? date = null,
-        Class? flightClass = null, string? passenger = null);
+        FlightClass? flightClass = null, string? passenger = null);
 }

@@ -6,7 +6,7 @@ namespace AirportTicketBookingSystem.Services.Implementations;
 
 public class FlightService(IFlightRepository flightRepository) : IFlightServices
 {
-    public List<Flight> SearchFlights(bool isBooked, string? keyword = null, decimal? price = null, DateTime? date = null, Class? flightClass = null) 
+    public List<Flight> SearchFlights(bool isBooked, string? keyword = null, decimal? price = null, DateTime? date = null, FlightClass? flightClass = null) 
     {
         var flights = flightRepository.LoadFlights().Where(flight => flight.IsBooked == isBooked).ToList();
         var filteredFlights = new List<Flight>();
@@ -29,7 +29,7 @@ public class FlightService(IFlightRepository flightRepository) : IFlightServices
         
         else if (flightClass.HasValue)
         {
-            filteredFlights = flights.Where(f => f.Class == flightClass.Value).ToList();
+            filteredFlights = flights.Where(f => f.FlightClass == flightClass.Value).ToList();
         }
         
         else if (price.HasValue)

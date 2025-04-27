@@ -23,7 +23,7 @@ public class FlightFileRepository : IFlightRepository
         {
             var line = $"{flight.Id},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
                        $"{flight.DepartureDate:yyyy-MM-ddTHH:mm:ss},{flight.DepartureAirport},{flight.DestinationAirport}," +
-                       $"{flight.Class},{flight.IsBooked}";
+                       $"{flight.FlightClass},{flight.IsBooked}";
             lines.Add(line);
         }
 
