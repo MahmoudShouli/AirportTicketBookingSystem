@@ -1,23 +1,32 @@
-﻿using AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Enums;
+using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Services.Implementations;
 
 namespace AirportTicketBookingSystem.Repository;
 
 public class FlightFileRepository : IFlightRepository
 {
-    private readonly string _filepath;
-    private readonly List<Flight> _flights;
+    private readonly string _filePath;
+    private List<Flight> _flights;
 
-    public FlightFileRepository(string filepath)
+    public FlightFileRepository(string filePath)
     {
-        _filepath = filepath;
-        _flights = FileServices.ConvertFileToFlights(_filepath);
+        _filePath = filePath;
+        _flights = FileServices.ConvertFileToList<Flight>(filePath, parts => new Flight
+        {
+            Id = parts[0],
+            Price = decimal.Parse(parts[1]),
+            DepartureCountry = parts[2],
+            DestinationCountry = parts[3],
+            DepartureDate = DateTime.Parse(parts[4]),
+            DepartureAirport = parts[5],
+            DestinationAirport = parts[6],
+            FlightClass = (FlightClass)Enum.Parse(typeof(FlightClass), parts[7], ignoreCase: true),
+            IsBooked = bool.Parse(parts[8])
+        });
     }
 
-    public List<Flight> GetAllFlights()
-    {
-        return _flights;
-    }
+    public List<Flight> GetAllFlights() => _flights;
 
     public List<Flight> SearchFlights(FlightFilter filter)
     {
@@ -53,6 +62,8 @@ public class FlightFileRepository : IFlightRepository
 
     public void SaveFlights(List<Flight> flights)
     {
+        _flights = flights;
+        
         var lines = new List<string> { "FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked" }
             .Concat(flights.Select(flight => 
                 $"{flight.Id},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
@@ -62,6 +73,6 @@ public class FlightFileRepository : IFlightRepository
             .ToList();
 
         
-        File.WriteAllLines(_filepath, lines);
+        File.WriteAllLines(_filePath, lines);
     }
 }
