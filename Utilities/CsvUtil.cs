@@ -50,7 +50,7 @@ public static class CsvUtil
         return new List<string> { "FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked" }
             .Concat(flights.Select(flight => 
                 $"{flight.Id},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
-                $"{flight.DepartureDate:yyyy-MM-ddTHH:mm:ss},{flight.DepartureAirport},{flight.DestinationAirport}," +
+                $"{flight.DepartureDate:yyyy-MM-dd},{flight.DepartureAirport},{flight.DestinationAirport}," +
                 $"{flight.FlightClass},{flight.IsBooked}"
             ))
             .ToList();

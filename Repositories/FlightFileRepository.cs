@@ -18,34 +18,17 @@ public class FlightFileRepository : IFlightRepository
 
     public List<Flight> SearchFlights(FlightFilter filter)
     {
-        var query = _flights.AsQueryable();
-
-        if (filter.Price.HasValue)
-        {
-            var targetPrice = filter.Price.Value;
-            query = query.Where(f => f.Price >= targetPrice - 10 && f.Price <= targetPrice + 10);
-        }
-        
-        if (!string.IsNullOrWhiteSpace(filter.DepartureCountry))
-            query = query.Where(f => f.DepartureCountry.Equals(filter.DepartureCountry, StringComparison.OrdinalIgnoreCase));
-
-        if (!string.IsNullOrWhiteSpace(filter.DestinationCountry))
-            query = query.Where(f => f.DestinationCountry.Equals(filter.DestinationCountry, StringComparison.OrdinalIgnoreCase));
-        
-        if (filter.DepartureDate.HasValue)
-            query = query.Where(f => f.DepartureDate.Date == filter.DepartureDate.Value.Date);
-        
-        if (!string.IsNullOrWhiteSpace(filter.DepartureAirport))
-            query = query.Where(f => f.DepartureAirport.Equals(filter.DepartureAirport, StringComparison.OrdinalIgnoreCase));
-
-        if (!string.IsNullOrWhiteSpace(filter.DestinationAirport))
-            query = query.Where(f => f.DestinationAirport.Equals(filter.DestinationAirport, StringComparison.OrdinalIgnoreCase));
-
-        if (filter.FlightClass.HasValue)
-            query = query.Where(f => f.FlightClass == filter.FlightClass.Value);
-
-        return query.ToList();
+        return _flights.Where(f =>
+            (!filter.Price.HasValue || (f.Price >= filter.Price.Value - 10 && f.Price <= filter.Price.Value + 10)) &&
+            (string.IsNullOrWhiteSpace(filter.DepartureCountry) || f.DepartureCountry.Equals(filter.DepartureCountry, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(filter.DestinationCountry) || f.DestinationCountry.Equals(filter.DestinationCountry, StringComparison.OrdinalIgnoreCase)) &&
+            (!filter.DepartureDate.HasValue || f.DepartureDate.Date == filter.DepartureDate.Value.Date) &&
+            (string.IsNullOrWhiteSpace(filter.DepartureAirport) || f.DepartureAirport.Equals(filter.DepartureAirport, StringComparison.OrdinalIgnoreCase)) &&
+            (string.IsNullOrWhiteSpace(filter.DestinationAirport) || f.DestinationAirport.Equals(filter.DestinationAirport, StringComparison.OrdinalIgnoreCase)) &&
+            (!filter.FlightClass.HasValue || f.FlightClass == filter.FlightClass.Value)
+        ).ToList();
     }
+
 
 
     public void SaveFlights(List<Flight> flights)

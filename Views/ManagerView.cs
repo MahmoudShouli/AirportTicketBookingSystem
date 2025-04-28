@@ -30,4 +30,24 @@ public static class ManagerView
             HelperPrinter.PrintAnyKeyMessage();
         }
     }
+    
+    public static void FilterBookingsHandler()
+    {
+        while (true)
+        {
+            MenuPrinter.PrintFilterBookingsMenu();
+            
+            var choice = ScannerUtil.ScanInt("choice");
+
+            switch (choice)
+            {
+                
+                case 10:
+                    return;
+                default:
+                    HelperPrinter.PrintAnyKeyMessage("Invalid choice (must be 1 - 10)");
+                    break;
+            }
+        }
+    }
 }

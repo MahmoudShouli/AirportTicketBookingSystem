@@ -102,8 +102,12 @@ public static class MenuPrinter
                       6. Departure Airport
                       7. Destination Airport
                       8. Class
-                      9. Exit
+                      9. *SEARCH BUTTON*
+                      10. Exit
 
+                      
+                      ** You can combine multiple filters, just press 9 when ready!**
+                      
                       """;
 
         Console.WriteLine(message);

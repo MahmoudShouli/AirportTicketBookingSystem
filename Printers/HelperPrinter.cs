@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Context;
+using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Printers;
 
@@ -34,5 +35,19 @@ public static class HelperPrinter
     {
         Console.WriteLine(prompt +"(Press any key to continue...)");
         Console.ReadLine();
+    }
+    
+    public static void PrintFlights(List<Flight> flights)
+    {
+        if (flights.Count == 0)
+            Console.WriteLine("No flights found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Available Flights:");
+            Console.WriteLine();
+            flights.ForEach(Console.WriteLine);
+            Console.WriteLine();
+        }
     }
 }
