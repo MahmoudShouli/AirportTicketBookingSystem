@@ -29,10 +29,10 @@ public static class HelperPrinter
                       """;
         Console.WriteLine(message);
     }
-
-    public static void PrintInvalidMessage(string prompt)
+    
+    public static void PrintAnyKeyMessage(string prompt = "")
     {
-        Console.WriteLine("Invalid input, please " + prompt + "\n");
-        Thread.Sleep(2500);
+        Console.WriteLine(prompt +"(Press any key to continue...)");
+        Console.ReadLine();
     }
 }

@@ -9,11 +9,10 @@ public static class MenuHandler
 {
     public static void MainMenuHandler()
     {
-        MenuPrinter.PrintWelcomeMessage();
-        MenuPrinter.PrintMainMenu();
-        
         while (true)
         {
+            MenuPrinter.PrintMainMenu();
+            
             var choice = ScannerUtil.ScanInt("choice");
 
             switch (choice)
@@ -25,10 +24,10 @@ public static class MenuHandler
                     RegisterHandler();
                     break;
                 case 3:
-                    MenuPrinter.PrintFinishMessage();
+                    HelperPrinter.PrintFinishMessage();
                     return;
                 default:
-                    MenuPrinter.PrintInvalidMessage("enter a valid choice");
+                    HelperPrinter.PrintAnyKeyMessage("Invalid choice (must be 1 - 3)");
                     break;
             }
         }
@@ -52,13 +51,15 @@ public static class MenuHandler
                 if (userType == UserType.Manager)
                 {
                     ManagerMenuHandler();
+                    return;
                 }
                 else if (userType == UserType.Passenger)
                 {
                     PassengerMenuHandler();
+                    return;
                 }
             }
-            Thread.Sleep(4000);
+            HelperPrinter.PrintAnyKeyMessage();
         }
     }
 
@@ -78,17 +79,68 @@ public static class MenuHandler
             {
                 PassengerMenuHandler();
             }
-            Thread.Sleep(4000);
+            HelperPrinter.PrintAnyKeyMessage();
         }
     }
     
     private static void ManagerMenuHandler()
     {
-        
+        while (true)
+        {
+            MenuPrinter.PrintManagerMenu();
+            
+            var choice = ScannerUtil.ScanInt("choice");
+
+            switch (choice)
+            {
+                case 1:
+                    MenuPrinter.PrintFilterBookingsMenu();
+                    break;
+                case 2:
+                    ImportHandler();
+                    break;
+                case 3:
+                    LogoutHandler();
+                    return;
+                default:
+                    HelperPrinter.PrintAnyKeyMessage("Invalid choice (must be 1 - 3)");
+                    break;
+            }
+        }
+    }
+    
+    private static void ImportHandler()
+    {
+        while (true)
+        {
+            MenuPrinter.PrintValidationDetails();
+            
+            var input = ScannerUtil.ScanNonEmptyString("your file path or Q to exit: ");
+            
+            if (input.Equals("Q", StringComparison.OrdinalIgnoreCase))
+                return;
+            
+            var report = AppStartup.ManagerController.ImportFlights(input);
+
+            // 1 means the report only contains the header (no errors added to it)
+            if (report.Count == 1)
+            {
+                HelperPrinter.PrintAnyKeyMessage("Import success!");
+                return;
+            }
+            
+            report.ForEach(Console.WriteLine);
+            HelperPrinter.PrintAnyKeyMessage();
+        }
     }
 
     private static void PassengerMenuHandler()
     {
         
+    }
+    
+    private static void LogoutHandler()
+    {
+        UserContext.ResetCurrentUser();
     }
 }

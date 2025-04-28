@@ -1,9 +1,13 @@
-﻿namespace AirportTicketBookingSystem.Printers;
+﻿using AirportTicketBookingSystem.Context;
+
+namespace AirportTicketBookingSystem.Printers;
 
 public static class MenuPrinter
 {
     public static void PrintMainMenu()
     {
+        Console.Clear();
+        HelperPrinter.PrintWelcomeMessage();
         var message = """
 
                       Registering Page
@@ -21,6 +25,8 @@ public static class MenuPrinter
     
     public static void PrintManagerMenu()
     {
+        Console.Clear();
+        HelperPrinter.PrintWelcomeSpecificUserMessage();
         var message = """
 
                       Manager Dashboard
@@ -38,6 +44,7 @@ public static class MenuPrinter
 
     public static void PrintFilterBookingsMenu()
     {
+        Console.Clear();
         var message = """
 
                       Booking Filters
@@ -61,6 +68,8 @@ public static class MenuPrinter
 
     public static void PrintPassengerMenu()
     {
+        Console.Clear();
+        HelperPrinter.PrintWelcomeSpecificUserMessage();
         var message = """
 
                       Passenger Dashboard
@@ -79,6 +88,7 @@ public static class MenuPrinter
 
     public static void PrintSearchFlightsMenu()
     {
+        Console.Clear();
         var message = """
 
                       Flight Filters
@@ -99,28 +109,54 @@ public static class MenuPrinter
         Console.WriteLine(message);
     }
     
-    public static void PrintWelcomeMessage()
+    public static void PrintValidationDetails()
     {
+        Console.Clear();
         var message = """
+                      Validation Details
+                      ----------------
 
-                      Hello and Welcome to the Airport Ticket Booking System!
+                      * Flight ID
+                      - Type       : string
+                      - Constraints: required
+                                     unique
 
+                      * Price
+                      - Type       : decimal
+                      - Constraints: required
+                      
+
+                      * Departure Country
+                      - Type       : string
+                      - Constraints: required
+                      
+
+                      * Destination Country
+                      - Type       : string
+                      - Constraints: required, cannot be the same as Departure Country
+                      
+
+                      * Departure Date
+                      - Type       : DateTime
+                      - Constraints: required, must be in the future
+                      
+
+                      * Departure Airport
+                      - Type       : string
+                      - Constraints: required
+                      
+
+                      * Destination Airport
+                      - Type       : string
+                      - Constraints: required
+                                     cannot be the same as Departure Airport
+
+                      * Class
+                      - Type       : enum (Economy, Business, FirstClass)
+                      - Constraints: required, must match exactly
+                      
                       """;
+
         Console.WriteLine(message);
-    }
-
-    public static void PrintFinishMessage()
-    {
-        var message = """
-
-                      Thank you for using our system!
-
-                      """;
-        Console.WriteLine(message);
-    }
-
-    public static void PrintInvalidMessage(string prompt)
-    {
-        Console.WriteLine("Invalid input, please " + prompt + "\n");
     }
 }

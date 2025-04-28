@@ -12,8 +12,9 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
         if (IsAdmin(name, password))
         {
             var manager = new Manager (name, password);
-            
             UserContext.SetCurrentUser(manager);
+            
+            return;
         }
         
         var passenger = passengersRepository.SearchPassengerByName(name);
@@ -42,6 +43,8 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
 
         var newPassenger = new Passenger(name, password);
         passengersRepository.AddPassenger(newPassenger);
+        
+        UserContext.SetCurrentUser(newPassenger);
     }
 
     private bool IsAdmin(string name, string password)

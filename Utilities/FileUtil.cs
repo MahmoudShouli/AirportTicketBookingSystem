@@ -1,26 +1,24 @@
-﻿namespace AirportTicketBookingSystem.Utilities;
+﻿using AirportTicketBookingSystem.Exceptions;
+
+namespace AirportTicketBookingSystem.Utilities;
 
 public static class FileUtil
 {
     public static List<T> ConvertFileToList<T>(string path, Func<string[], T> mapFunc)
     {
-        try
-        {
-            var lines = File.ReadAllLines(path);
+        var lines = File.ReadAllLines(path);
 
-            return lines
-                .Skip(1) 
-                .Select(line =>
-                {
-                    var parts = line.Split(',');
-                    return mapFunc(parts);
-                })
-                .ToList();
-        }
-        catch (Exception)
-        {
-            return new List<T>();
-        }
+        if (lines.Length == 0)
+            throw new InvalidFlightsException("File is empty, no flights were found.");
+        
+        return lines
+            .Skip(1) 
+            .Select(line =>
+            {
+                var parts = line.Split(',');
+                return mapFunc(parts);
+            })
+            .ToList();
     }
     
     

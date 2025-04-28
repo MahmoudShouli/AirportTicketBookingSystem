@@ -3,7 +3,7 @@ using AirportTicketBookingSystem.Models;
 
 namespace AirportTicketBookingSystem.Utilities;
 
-public class CsvUtil
+public static class CsvUtil
 {
     public static Passenger CsvToPassenger(string[] parts)
     {
