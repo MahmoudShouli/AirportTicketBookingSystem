@@ -1,10 +1,24 @@
-﻿namespace AirportTicketBookingSystem.Models;
+﻿using AirportTicketBookingSystem.Enums;
 
-#nullable disable
-public class Passenger
+namespace AirportTicketBookingSystem.Models;
+
+
+public class Passenger : User
 {
-    public string Name { get; init; }
-    public List<Booking> Bookings { get; set; } = new List<Booking>();
+    public List<Booking> Bookings { get; set; }
+
+    public Passenger()
+    {
+        Bookings = new List<Booking>();
+        UserType = UserType.Passenger;
+    }
+    public Passenger(string name, string password)
+    {
+        Name = name;
+        Password = password;
+        Bookings = new List<Booking>();
+        UserType = UserType.Passenger;
+    }
 
     public void AddBooking(Booking booking)
     {

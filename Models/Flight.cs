@@ -11,7 +11,7 @@ public class Flight
     public DateTime DepartureDate { get; init; }
     public string DepartureAirport { get; init; } = "";
     public string DestinationAirport { get; init; } = "";
-    public Class Class { get; init; }
+    public FlightClass FlightClass { get; init; }
     public bool IsBooked { get; set; } = false;
 
     public override string ToString()
@@ -21,7 +21,7 @@ public class Flight
                $"From: {DepartureCountry} ({DepartureAirport}) -> " +
                $"To: {DestinationCountry} ({DestinationAirport}) | " +
                $"Date: {DepartureDate:yyyy-MM-dd} | " +
-               $"Class: {Class}";
+               $"Class: {FlightClass}";
     }
 
 }
