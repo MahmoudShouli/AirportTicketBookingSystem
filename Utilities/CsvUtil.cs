@@ -40,7 +40,7 @@ public static class CsvUtil
         return new List<string> { "Name,Password,Bookings" }
             .Concat(passengers.Select(passenger =>
                 $"{passenger.Name},{passenger.Password}," +
-                $"{string.Join(';', passenger.Bookings.Select(b => b.FlightId))}"
+                $"{string.Join(';', passenger.Bookings.Select(b => b.FlightId.ToUpper()))}"
             ))
             .ToList();
     }

@@ -9,4 +9,5 @@ public interface IPassengersRepository
     Passenger? SearchPassengerByName(string passengerName);
     void SavePassengers(List<Passenger> passengers);
     void AddPassenger(Passenger passenger);
+    void Update();
 }

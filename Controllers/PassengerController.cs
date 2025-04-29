@@ -18,4 +18,18 @@ public class PassengerController(IPassengerServices passengerServices)
         }
         return flights;
     }
+
+    public bool BookFlight(string flightId)
+    {
+        try
+        {
+            passengerServices.BookFlight(flightId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
 }

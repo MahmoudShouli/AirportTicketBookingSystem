@@ -77,6 +77,10 @@ public static class MenuHandler
                     PassengerView.SearchHandler();
                     break;
                 
+                case 2:
+                    PassengerView.BookHandler();
+                    break;
+                
                 case 5:
                     AuthView.LogoutHandler();
                     return;

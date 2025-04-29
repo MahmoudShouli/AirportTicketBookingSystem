@@ -15,6 +15,17 @@ public class FlightFileRepository : IFlightRepository
     }
 
     public List<Flight> GetAllFlights() => _flights;
+    
+    public Flight? GetFlightById(string id)
+    {
+       return _flights.FirstOrDefault(flight => flight.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    public List<Flight> GetFlightsByAvailability(bool isAvailable)
+    {
+        return _flights.Where(f=> f.IsBooked == !isAvailable).ToList();
+    }
+
 
     public List<Flight> SearchFlights(FlightFilter filter)
     {
@@ -25,16 +36,19 @@ public class FlightFileRepository : IFlightRepository
             (!filter.DepartureDate.HasValue || f.DepartureDate.Date == filter.DepartureDate.Value.Date) &&
             (string.IsNullOrWhiteSpace(filter.DepartureAirport) || f.DepartureAirport.Equals(filter.DepartureAirport, StringComparison.OrdinalIgnoreCase)) &&
             (string.IsNullOrWhiteSpace(filter.DestinationAirport) || f.DestinationAirport.Equals(filter.DestinationAirport, StringComparison.OrdinalIgnoreCase)) &&
-            (!filter.FlightClass.HasValue || f.FlightClass == filter.FlightClass.Value)
+            (!filter.FlightClass.HasValue || f.FlightClass == filter.FlightClass.Value) 
         ).ToList();
     }
-
-
-
+    
     public void SaveFlights(List<Flight> flights)
     {
         _flights = flights;
         var lines = CsvUtil.FlightsToCsv(flights);
         File.WriteAllLines(_filePath, lines);
+    }
+
+    public void Update()
+    {
+        SaveFlights(_flights);
     }
 }

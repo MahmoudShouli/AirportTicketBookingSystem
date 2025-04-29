@@ -33,6 +33,11 @@ public class PassengersFileRepository : IPassengersRepository
         _passengers.Add(passenger);
         SavePassengers(_passengers);
     }
+
+    public void Update()
+    {
+        SavePassengers(_passengers);
+    }
 }
 
 

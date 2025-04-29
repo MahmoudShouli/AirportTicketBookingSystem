@@ -23,7 +23,7 @@ public static class AppStartup
         
         AuthService = new AuthServiceImpl(passengerRepo);
         ManagerServices = new ManagerServicesImpl();
-        PassengerServices = new PassengerServicesImpl(flightRepo);
+        PassengerServices = new PassengerServicesImpl(passengerRepo, flightRepo);
         
         AuthController = new AuthController(AuthService);
         ManagerController = new ManagerController(ManagerServices);

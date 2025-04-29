@@ -13,6 +13,7 @@ public class FlightFilter
     public string? DepartureAirport { get; set; }
     public string? DestinationAirport { get; set; }
     public FlightClass? FlightClass { get; set; }
+    public bool? IsBooked { get; set; }
 
     public bool IsEmpty()
     {
@@ -23,6 +24,8 @@ public class FlightFilter
                && !DepartureDate.HasValue
                && string.IsNullOrWhiteSpace(DepartureAirport)
                && string.IsNullOrWhiteSpace(DestinationAirport)
-               && !FlightClass.HasValue;
+               && !FlightClass.HasValue
+               && !IsBooked.HasValue;
+
     }
 }

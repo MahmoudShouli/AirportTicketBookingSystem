@@ -66,4 +66,25 @@ public class PassengerView
             
         }
     }
+
+    public static void BookHandler()
+    {
+        while (true)
+        {
+            Console.Clear();
+
+            var input = ScannerUtil.ScanNonEmptyString("flight id");
+            
+            var success = AppStartup.PassengerController.BookFlight(input);
+
+            if (success)
+            {
+                Console.WriteLine("Flight booked successfully");
+                
+                
+            }
+            HelperPrinter.PrintAnyKeyMessage();
+            return;
+        }
+    }
 }
