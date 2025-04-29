@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingSystem.Services;
+﻿using AirportTicketBookingSystem.Models;
+using AirportTicketBookingSystem.Services;
 
 namespace AirportTicketBookingSystem.Controllers;
 
@@ -17,5 +18,19 @@ public class ManagerController(IManagerServices managerService)
         }
        
         return report;
+    }
+    
+    public List<Booking> FilterBookings(BookingFilter filter)
+    {
+        var bookings = new List<Booking>();
+        try
+        {
+            bookings = managerService.FilterBookings(filter);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return bookings;
     }
 }

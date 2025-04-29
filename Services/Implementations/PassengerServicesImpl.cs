@@ -6,13 +6,13 @@ namespace AirportTicketBookingSystem.Services.Implementations;
 
 public class PassengerServicesImpl(IPassengersRepository passengersRepository, IFlightRepository flightRepository) : IPassengerServices
 {
-    public List<Flight> SearchFlights(FlightFilter flightFilter)
+    public List<Flight> SearchFlights(FlightFilter filter)
     {
-        if (flightFilter.IsEmpty())
+        if (filter.IsEmpty())
         {
             throw new ArgumentException("Choose filters first");
         }
-        return flightFilter.All ?  flightRepository.GetFlightsByAvailability(true): flightRepository.SearchFlights(flightFilter);
+        return filter.All ?  flightRepository.GetFlightsByAvailability(true): flightRepository.SearchFlights(filter);
     }
 
     public void BookFlight(string flightId)

@@ -59,7 +59,10 @@ public static class MenuPrinter
                       7. Arrival Airport
                       8. Class
                       9. Passenger
-                      10. Exit
+                      10. *SEARCH BUTTON*
+                      11. Exit
+                      
+                      ** You can combine multiple filters, just press 10 when ready!**
 
                       """;
 
@@ -81,6 +84,7 @@ public static class MenuPrinter
                       4. Cancel a booking
                       5. Logout
 
+                      
                       """;
 
         Console.WriteLine(message);

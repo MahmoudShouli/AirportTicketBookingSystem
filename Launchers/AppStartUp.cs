@@ -22,7 +22,7 @@ public static class AppStartup
         var flightRepo = new FlightFileRepository(Program.Configuration["FilePaths:FlightsCsv"]!);
         
         AuthService = new AuthServiceImpl(passengerRepo);
-        ManagerServices = new ManagerServicesImpl();
+        ManagerServices = new ManagerServicesImpl(passengerRepo, flightRepo);
         PassengerServices = new PassengerServicesImpl(passengerRepo, flightRepo);
         
         AuthController = new AuthController(AuthService);
