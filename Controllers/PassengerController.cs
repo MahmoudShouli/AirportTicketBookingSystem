@@ -32,4 +32,18 @@ public class PassengerController(IPassengerServices passengerServices)
             return false;
         }
     }
+
+    public bool CancelBooking(string flightId)
+    {
+        try
+        {
+            passengerServices.CancelBooking(flightId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using AirportTicketBookingSystem.launchers;
+﻿using AirportTicketBookingSystem.Context;
+using AirportTicketBookingSystem.launchers;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Printers;
 using AirportTicketBookingSystem.Utilities;
@@ -80,6 +81,39 @@ public class PassengerView
             if (success)
             {
                 Console.WriteLine("Flight booked successfully");
+                
+                
+            }
+            HelperPrinter.PrintAnyKeyMessage();
+            return;
+        }
+    }
+
+    public static void PrintBookingHandler()
+    {
+        Console.Clear();
+        
+        var currentUser = UserContext.CurrentUser as Passenger;
+        
+        if (currentUser != null)
+            HelperPrinter.PrintBookings(currentUser.Bookings);
+        
+        HelperPrinter.PrintAnyKeyMessage();
+    }
+
+    public static void CancellationHandler()
+    {
+        while (true)
+        {
+            Console.Clear();
+
+            var input = ScannerUtil.ScanNonEmptyString("flight id");
+            
+            var success = AppStartup.PassengerController.CancelBooking(input);
+
+            if (success)
+            {
+                Console.WriteLine("Booking removed successfully");
                 
                 
             }

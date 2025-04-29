@@ -29,11 +29,35 @@ public class PassengerServicesImpl(IPassengersRepository passengersRepository, I
             throw new ArgumentException("Flight is already booked");
         }
 
-        var passenger = UserContext.CurrentUser as Passenger;
-        var booking = new Booking { FlightId = flightId, PassengerName = passenger!.Name };
+        var currentUser = UserContext.CurrentUser as Passenger;
+        var booking = new Booking { FlightId = flightId, PassengerName = currentUser!.Name };
         
-        passenger.AddBooking(booking);
+        currentUser.AddBooking(booking);
         flightToBook.IsBooked = true;
+        
+        flightRepository.Update();
+        passengersRepository.Update();
+    }
+
+    public void CancelBooking(string flightId)
+    {
+        var flightToCancel = flightRepository.GetFlightById(flightId);
+        
+        if (flightToCancel == null)
+        {
+            throw new ArgumentException("Flight not found");
+        }
+        
+        var currentUser = UserContext.CurrentUser as Passenger;
+        var bookingToCancel = currentUser!.Bookings.FirstOrDefault(b => b.FlightId == flightToCancel.Id);
+        
+        if (bookingToCancel == null)
+        {
+            throw new ArgumentException("Booking not found");
+        }
+        
+        currentUser.RemoveBooking(bookingToCancel);
+        flightToCancel.IsBooked = false;
         
         flightRepository.Update();
         passengersRepository.Update();

@@ -1,5 +1,5 @@
 FlightId,Price,DepartureCountry,DestinationCountry,DepartureDate,DepartureAirport,DestinationAirport,Class,IsBooked
-FL001,500,USA,France,2025-06-15,John F. Kennedy International,Charles de Gaulle,Business,True
+FL001,500,USA,France,2025-06-15,John F. Kennedy International,Charles de Gaulle,Business,False
 FL002,130,UK,Japan,2025-07-01,Heathrow,Narita International,Economy,True
 FL003,599.99,Canada,Germany,2025-05-20,Toronto Pearson,Frankfurt Airport,FirstClass,True
 FL004,385.75,Italy,Spain,2025-06-10,Leonardo da Vinci,Madrid-Barajas,Business,True

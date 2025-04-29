@@ -6,4 +6,5 @@ public interface IPassengerServices
 {
     List<Flight> SearchFlights(FlightFilter flightFilter);
     void BookFlight(string flightId);
+    void CancelBooking(string flightId);
 }

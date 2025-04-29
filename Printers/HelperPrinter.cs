@@ -50,4 +50,18 @@ public static class HelperPrinter
             Console.WriteLine();
         }
     }
+    
+    public static void PrintBookings(List<Booking> bookings)
+    {
+        if (bookings.Count == 0)
+            Console.WriteLine("No bookings found.");
+        else
+        {
+            Console.WriteLine();
+            Console.WriteLine("Bookings:");
+            Console.WriteLine();
+            bookings.ForEach(Console.WriteLine);
+            Console.WriteLine();
+        }
+    }
 }

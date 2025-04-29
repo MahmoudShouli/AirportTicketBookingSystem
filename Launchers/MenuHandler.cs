@@ -81,6 +81,14 @@ public static class MenuHandler
                     PassengerView.BookHandler();
                     break;
                 
+                case 3:
+                    PassengerView.PrintBookingHandler();
+                    break;
+                
+                case 4:
+                    PassengerView.CancellationHandler();
+                    break;
+                
                 case 5:
                     AuthView.LogoutHandler();
                     return;
