@@ -14,6 +14,15 @@ namespace AirportTicketBookingSystem.Tests;
 
 public class UserShould : IDisposable
 {
+    private readonly Mock<IPassengersRepository> _mockRepo;
+    private readonly AuthServiceImpl _sut;
+    public UserShould()
+    {
+        _mockRepo = new();
+        _sut = new(_mockRepo.Object);
+    }
+    
+    [Trait("Login", "Success")]
     [Fact]
     public void Login_Successfully_AsManager_WhenCredentialsAreValid()
     {
@@ -21,40 +30,38 @@ public class UserShould : IDisposable
         const string name = "mahmoud";
         const string password = "123";
         
-        var passengersRepoMock = new Mock<IPassengersRepository>();
-        passengersRepoMock.Setup(x => x.SearchPassengerByName(name)).Returns((Passenger)(null));
-        
-        var sut = new AuthServiceImpl(passengersRepoMock.Object);
+        _mockRepo.Setup(x => x.SearchPassengerByName(name)).Returns(() => null);
 
         // Act
-        var act = () => sut.Login(name, password);
+        var result = _sut.Login(name, password);
         
         // Assert
-        act.Should().NotThrow<PassengerNotFoundException>();
-        act.Should().NotThrow<InvalidPasswordException>();
+        result.Name.Should().Be(name);
+        result.Password.Should().Be(password);
+        UserContext.CurrentUser.Should().BeSameAs(result);
         UserContext.GetCurrentUserType().Should().Be(UserType.Manager);
     }
     
+    [Trait("Login", "Success")]
     [Theory]
     [InlineData("john", "123")]
     [InlineData("alice", "321")]
     public void Login_Successfully_AsPassenger_WhenCredentialsAreValid(string name, string password)
     {
         // Arrange
-        var passengersRepoMock = new Mock<IPassengersRepository>();
-        passengersRepoMock.Setup(x => x.SearchPassengerByName(name)).Returns(new Passenger {Name = name, Password = password});
-        
-        var sut = new AuthServiceImpl(passengersRepoMock.Object);
+        _mockRepo.Setup(x => x.SearchPassengerByName(name)).Returns(new Passenger {Name = name, Password = password});
 
         // Act
-        var act = () => sut.Login(name, password);
+        var result = _sut.Login(name, password);
         
         // Assert
-        act.Should().NotThrow<PassengerNotFoundException>();
-        act.Should().NotThrow<InvalidPasswordException>();
+        result.Name.Should().Be(name);
+        result.Password.Should().Be(password);
+        UserContext.CurrentUser.Should().BeSameAs(result);
         UserContext.GetCurrentUserType().Should().Be(UserType.Passenger);
     }
 
+    [Trait("Login", "Failure")]
     [Fact]
     public void FailToLogin_WhenNameIsNotFound()
     {
@@ -63,20 +70,18 @@ public class UserShould : IDisposable
         var name = fixture.Create<string>();
         var password = fixture.Create<string>();
         
-        var passengersRepoMock = new Mock<IPassengersRepository>();
-        passengersRepoMock.Setup(x => x.SearchPassengerByName(name)).Returns((Passenger)null);
+       _mockRepo.Setup(x => x.SearchPassengerByName(name)).Returns(() => null);
         
-        var sut = new AuthServiceImpl(passengersRepoMock.Object);
-
         // Act
-        var act = () => sut.Login(name, password);
+        var act = () => _sut.Login(name, password);
         
         // Assert
-        act.Should().Throw<PassengerNotFoundException>()
-            .WithMessage($"Passenger '{name}' not found.");
+        act.Should().Throw<NotFoundException>()
+            .WithMessage($"Passenger with name {name} not found.");
         UserContext.CurrentUser.Should().Be(null);
     }
     
+    [Trait("Login", "Failure")]
     [Fact]
     public void FailToLogin_WhenPasswordIsInvalid()
     {
@@ -85,13 +90,10 @@ public class UserShould : IDisposable
         const string password = "123";
         const string wrongPassword = "321";
         
-        var passengersRepoMock = new Mock<IPassengersRepository>();
-        passengersRepoMock.Setup(x => x.SearchPassengerByName(name)).Returns(new Passenger {Name = name, Password = password});
+        _mockRepo.Setup(x => x.SearchPassengerByName(name)).Returns(new Passenger {Name = name, Password = password});
         
-        var sut = new AuthServiceImpl(passengersRepoMock.Object);
-
         // Act
-        var act = () => sut.Login(name, wrongPassword);
+        var act = () => _sut.Login(name, wrongPassword);
         
         // Assert
         act.Should().Throw<InvalidPasswordException>()

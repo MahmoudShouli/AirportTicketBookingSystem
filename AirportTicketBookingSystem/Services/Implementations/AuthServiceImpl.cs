@@ -7,21 +7,21 @@ namespace AirportTicketBookingSystem.Services.Implementations;
 
 public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuthService
 {
-    public void Login(string name, string password)
+    public User Login(string name, string password)
     {
         if (IsAdmin(name, password))
         {
             var manager = new Manager (name, password);
             UserContext.SetCurrentUser(manager);
             
-            return;
+            return manager;
         }
         
         var passenger = passengersRepository.SearchPassengerByName(name);
 
         if (passenger == null)
         {
-            throw new PassengerNotFoundException(name);
+            throw new NotFoundException($"Passenger with name {name}");
         }
 
         if (!password.Equals(passenger.Password))
@@ -30,6 +30,7 @@ public class AuthServiceImpl(IPassengersRepository passengersRepository) : IAuth
         }
             
         UserContext.SetCurrentUser(passenger);
+        return passenger;
     }
 
     public void Register(string name, string password)
