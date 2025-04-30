@@ -35,6 +35,7 @@ public static class AuthView
                 }
             }
             HelperPrinter.PrintAnyKeyMessage();
+            return;
         }
     }
 
@@ -55,6 +56,7 @@ public static class AuthView
                 MenuHandler.PassengerMenuHandler();
             }
             HelperPrinter.PrintAnyKeyMessage();
+            return;
         }
     }
     

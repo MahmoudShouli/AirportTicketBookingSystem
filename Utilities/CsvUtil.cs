@@ -7,17 +7,22 @@ public static class CsvUtil
 {
     public static Passenger CsvToPassenger(string[] parts)
     {
+        var name = parts.Length > 0 ? parts[0] : "";
+        var password = parts.Length > 1 ? parts[1] : "";
+        var bookingsRaw = parts.Length > 2 ? parts[2] : "";
+
         return new Passenger
         {
-            Name = parts[0],
-            Password = parts[1],
-            Bookings = string.IsNullOrWhiteSpace(parts[2])
+            Name = name,
+            Password = password,
+            Bookings = string.IsNullOrWhiteSpace(bookingsRaw)
                 ? new List<Booking>()
-                : parts[2].Split(';', StringSplitOptions.RemoveEmptyEntries)
-                    .Select(flightId => new Booking { PassengerName = parts[0], FlightId = flightId })
+                : bookingsRaw.Split(';', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(flightId => new Booking { PassengerName = name, FlightId = flightId })
                     .ToList()
         };
     }
+
 
     public static Flight CsvToFlight(string[] parts)
     {
