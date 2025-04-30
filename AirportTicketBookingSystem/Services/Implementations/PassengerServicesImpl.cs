@@ -1,4 +1,5 @@
 ﻿using AirportTicketBookingSystem.Context;
+using AirportTicketBookingSystem.Exceptions;
 using AirportTicketBookingSystem.Models;
 using AirportTicketBookingSystem.Repositories;
 
@@ -15,18 +16,18 @@ public class PassengerServicesImpl(IPassengersRepository passengersRepository, I
         return filter.All ?  flightRepository.GetFlightsByAvailability(true): flightRepository.SearchFlights(filter);
     }
 
-    public void BookFlight(string flightId)
+    public Booking BookFlight(string flightId)
     {
         var flightToBook = flightRepository.GetFlightById(flightId);
 
         if (flightToBook == null)
         {
-            throw new ArgumentException("Flight not found");
+            throw new NotFoundException("Flight");
         }
 
         if (flightToBook.IsBooked)
         {
-            throw new ArgumentException("Flight is already booked");
+            throw new FlightAlreadyBookedException();
         }
 
         var currentUser = UserContext.CurrentUser as Passenger;
@@ -37,6 +38,8 @@ public class PassengerServicesImpl(IPassengersRepository passengersRepository, I
         
         flightRepository.Update();
         passengersRepository.Update();
+        
+        return booking;
     }
 
     public void CancelBooking(string flightId)
@@ -45,7 +48,7 @@ public class PassengerServicesImpl(IPassengersRepository passengersRepository, I
         
         if (flightToCancel == null)
         {
-            throw new ArgumentException("Flight not found");
+            throw new NotFoundException("Flight");
         }
         
         var currentUser = UserContext.CurrentUser as Passenger;
@@ -53,7 +56,7 @@ public class PassengerServicesImpl(IPassengersRepository passengersRepository, I
         
         if (bookingToCancel == null)
         {
-            throw new ArgumentException("Booking not found");
+            throw new NotFoundException("Booking");
         }
         
         currentUser.RemoveBooking(bookingToCancel);
